@@ -1,9 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { usePathname } from "@/i18n/navigation";
 import clsx from "clsx";
 import { useLocale } from "next-intl";
-import { useParams } from "next/navigation";
 import { ChangeEvent, ReactNode, useTransition } from "react";
 
 type Props = {

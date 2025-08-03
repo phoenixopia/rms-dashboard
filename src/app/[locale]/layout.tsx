@@ -6,6 +6,8 @@ import { Poppins } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { AuthProvider } from "@/lib/auth";
+import { ModeToggle } from "@/components/custome/shared/ModeToggle";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -38,7 +40,8 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <AuthProvider> {children}</AuthProvider>
+
             <Toaster />
           </ThemeProvider>
         </NextIntlClientProvider>
