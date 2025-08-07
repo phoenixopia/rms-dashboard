@@ -11,7 +11,6 @@ import { Loader2 } from "lucide-react";
 import Image from "next/image";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useState, useTransition } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -42,7 +41,13 @@ export default function LoginForm() {
     startTransition(async () => {
       const response = await loginApi(payload);
       if (response.success && response.data) {
-        login(response.data);
+        toast.success("Logged In Succesful");
+        console.log("Response", response);
+        login({
+          success: response.success,
+          data: response.data,
+          requiresPasswordChange: response.requiresPasswordChange,
+        });
       } else {
         toast.error("Error", {
           description: response.message,

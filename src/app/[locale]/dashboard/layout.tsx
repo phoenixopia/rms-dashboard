@@ -1,5 +1,6 @@
 "use client";
 import { AppSidebar } from "@/components/dashboard/App-Sidebar";
+import { DashboardHeader } from "@/components/dashboard/DashBoardHeader";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/lib/auth";
@@ -18,22 +19,27 @@ export default function DashboardLayout({
   useEffect(() => {
     if (!isAuthenticated) {
       router.push("/login");
+    } else if (user?.requiresPasswordChange) {
+      router.push("/change-password");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, user, router]);
 
-  if (!isAuthenticated || !user) {
+  if (!isAuthenticated || user?.requiresPasswordChange) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p>Loading dashboard...</p>
+        <p>Redirecting...</p>
       </div>
     );
   }
 
-  const userRole = user.role;
+  console.log("User Require Password change", user?.requiresPasswordChange);
+
+  const userRole = user?.role;
+
+  console.log("User ", user);
   const routes = userRole ? roleRoutes[userRole] : [];
 
   if (!routes || routes.length === 0) {
-    // Handle case where user role does not have defined routes
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p>No dashboard routes defined for your role.</p>
@@ -45,8 +51,8 @@ export default function DashboardLayout({
     <SidebarProvider>
       <AppSidebar routes={routes} />
       <div className="flex min-h-full w-full flex-col">
+        <DashboardHeader />
         <main className="bg bg-background flex flex-1 flex-col px-4">
-          <SidebarTrigger />
           {children}
         </main>
       </div>

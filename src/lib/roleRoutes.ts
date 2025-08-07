@@ -26,9 +26,17 @@ export interface RouteItem {
 
 export const roleRoutes: Record<string, RouteItem[]> = {
   super_admin: [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/restaurants", label: "Restaurants", icon: Building },
-    { href: "/admins", label: "Admins", icon: Users },
+    {
+      href: "/dashboard/superadmin/overview",
+      label: "Dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      href: "/dashboard/superadmin/restaurant",
+      label: "Restaurants",
+      icon: Building,
+    },
+    { href: "/dashboard/superadmin/admins", label: "Admins", icon: Users },
     { href: "/subscriptions", label: "Subscriptions", icon: BadgeDollarSign },
     { href: "/roles", label: "Roles", icon: ShieldCheck },
     { href: "/social-media", label: "Approve Videos", icon: Video },
@@ -37,7 +45,11 @@ export const roleRoutes: Record<string, RouteItem[]> = {
     { href: "/settings", label: "Settings", icon: Settings },
   ],
   restaurant_admin: [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    {
+      href: "/dashboard/restaurantadmin/overview",
+      label: "Dashboard",
+      icon: LayoutDashboard,
+    },
     { href: "/staff", label: "Staff", icon: UserCog },
     { href: "/branch", label: "Branch", icon: Store },
     { href: "/menu", label: "Menu", icon: ListOrdered },

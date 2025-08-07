@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const i18nMiddleware = createMiddleware(routing);
 
-const protectedRoutes = ["dashboard", "admin", "profile"];
+const protectedRoutes = ["dashboard", "admin", "profile", "change-password"];
 const publicRoutes = ["login", "about", "contact"];
 
 const locales = routing.locales;

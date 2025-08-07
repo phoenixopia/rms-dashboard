@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "@/i18n/navigation";
+import { AdminLoginData, BackendAdminLoginResponse } from "@/types";
 
 type Role = "super_admin" | "restaurant_admin" | "staff";
 
@@ -11,12 +12,17 @@ interface User {
   permissions?: string[];
   restaurant_id?: string | null;
   branch_id?: string | null;
+  requiresPasswordChange?: boolean;
 }
 
 interface AuthContextValue {
   isAuthenticated: boolean;
   user: User | null;
-  login: (data: any) => void;
+  login: (response: {
+    success: boolean;
+    data: BackendAdminLoginResponse;
+    requiresPasswordChange?: boolean;
+  }) => void;
   logout: () => void;
 }
 
@@ -24,6 +30,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,10 +47,55 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const login = (data: User) => {
-    Cookies.set("auth", JSON.stringify(data), { secure: true });
-    setUser(data);
-    router.push("/dashboard");
+  useEffect(() => {
+    if (isLoggingIn && user) {
+      if (user.requiresPasswordChange) {
+        router.push("/change-password");
+      } else {
+        router.push("/dashboard");
+      }
+      setIsLoggingIn(false);
+    }
+  }, [user, isLoggingIn, router]);
+
+  const login = (response: {
+    // Renamed data to response for clarity
+    success: boolean;
+    data: BackendAdminLoginResponse; // This is the full backend response
+    requiresPasswordChange?: boolean; // This flag comes from loginApi's return
+  }) => {
+    const adminLoginData: AdminLoginData = response.data.data;
+    const requiresPasswordChangeFromApi =
+      response.requiresPasswordChange || false;
+
+    let userData: User;
+    if (requiresPasswordChangeFromApi) {
+      console.log("Apple - Requires Password Change");
+      userData = {
+        id: adminLoginData.id, // Use id from adminLoginData
+        role: null, // Role is not fully set until password is changed
+        permissions: [], // No permissions until password is changed
+        restaurant_id: null,
+        branch_id: null,
+        requiresPasswordChange: true,
+      };
+    } else {
+      console.log("Mango - Standard Login");
+      console.log("Admin Login Data", adminLoginData);
+      userData = {
+        id: adminLoginData.id,
+        role: adminLoginData.role as Role, // Cast to Role type if confident
+        permissions: adminLoginData.permissions,
+        restaurant_id: adminLoginData.restaurant_id,
+        branch_id: adminLoginData.branch_id,
+        requiresPasswordChange: false,
+      };
+    }
+
+    Cookies.set("auth", JSON.stringify(userData), { secure: true, expires: 7 });
+    setUser(userData);
+
+    setIsLoggingIn(true);
   };
 
   const logout = () => {

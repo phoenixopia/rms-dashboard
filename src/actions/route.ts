@@ -1,3 +1,4 @@
+import { BackendAdminLoginResponse } from "@/types";
 import api from "./api";
 
 export const loginApi = async (payload: {
@@ -6,13 +7,42 @@ export const loginApi = async (payload: {
   signupMethod: "email" | "phone_number";
 }) => {
   try {
-    const res = await api.post("/auth/login", payload);
-    console.log("Result", res);
-    return { success: true, data: res.data.data };
+    const res = await api.post<BackendAdminLoginResponse>(
+      "/auth/login",
+      payload,
+    );
+
+    console.log("BackendAdminLoginResponse", res);
+    const requiresPasswordChange = res.data.data?.requiresPasswordChange;
+
+    return {
+      success: true,
+      data: res.data,
+      requiresPasswordChange: requiresPasswordChange,
+    };
   } catch (e: any) {
     return {
       success: false,
       message: e.response?.data?.message || "Login failed",
+    };
+  }
+};
+
+export const changePasswordApi = async (payload: {
+  userId: string;
+  newPassword: string;
+}) => {
+  try {
+    console.log("User Id", payload.userId);
+    const res = await api.post(
+      `/auth/change-temp-password/${payload.userId}`,
+      payload,
+    );
+    return { success: true, data: res.data };
+  } catch (e: any) {
+    return {
+      success: false,
+      message: e.response?.data?.message || "Password update failed",
     };
   }
 };

@@ -21,11 +21,12 @@ interface SidebarProps {
 export function AppSidebar({ routes }: SidebarProps) {
   const pathname = usePathname();
   return (
-    <Sidebar>
-      <SidebarContent className="bg-background">
+    <Sidebar className="bg-card z-100 border-none">
+      <SidebarContent className="bg-card">
         <SidebarGroup className="relative">
-          <SidebarGroupLabel>
-            <h1 className="text-xl font-bold">Dashboared</h1>
+          <SidebarGroupLabel className="flex flex-col items-start">
+            <h1 className="text-xl font-bold">RMS</h1>
+            <span className="text-xs">Admin Dashboared</span>
           </SidebarGroupLabel>
           <SidebarGroupContent className="pt-8">
             <SidebarMenu className="flex flex-col gap-2">
