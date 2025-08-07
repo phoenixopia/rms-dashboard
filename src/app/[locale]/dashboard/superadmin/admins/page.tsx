@@ -30,13 +30,13 @@ export default async function AdminsPages({ searchParams }: AdminsPageProps) {
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
 
-  if (!data || data.data.users.length === 0) {
+  if (!data || data.data.data.length === 0) {
     return <div className="p-4 text-center">No admins found.</div>;
   }
   return (
     <div className="container mx-auto py-5">
       <h1 className="mb-4 text-2xl font-bold">Admins</h1>
-      <AdminsTable users={data.data.users} />
+      <AdminsTable users={data.data.data} />
       <div className="mt-4">
         <Pagination
           currentPage={data.data.page}

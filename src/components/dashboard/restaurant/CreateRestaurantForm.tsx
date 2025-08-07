@@ -61,7 +61,7 @@ export function CreateRestaurantForm() {
       setLoadingAdmins(true);
       try {
         const response = await getAllCreatedUsers();
-        setAdmins(response.data.users);
+        setAdmins(response.data.data);
       } catch (e) {
         toast.error("Failed to fetch admin users.");
       } finally {

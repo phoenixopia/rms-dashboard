@@ -1,4 +1,4 @@
-"use client"; // This is a Client Component
+"use client";
 
 import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import {
@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"; // Assuming shadcn-ui table is here
-import { User } from "@/types";
+import { Restaurant, RoleData, RoleResponse } from "@/types";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
@@ -26,24 +26,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface AdminTableProps {
-  users: User[];
+interface SuperAdminRoleTableProps {
+  data: RoleData[];
 }
 
-export default function AdminsTable({ users }: AdminTableProps) {
+export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
   const [searchRes, setSearchRes] = useState("");
-  const [localRestaurants, setLocalRestaurants] = useState(users ?? []);
+  const [localRoles, setLocalRestaurants] = useState(data ?? []);
 
   const fuse = useMemo(() => {
-    return new Fuse(localRestaurants, {
+    return new Fuse(localRoles, {
       keys: ["restaurant_name", "status"],
       threshold: 0.4,
     });
-  }, [localRestaurants]);
+  }, [localRoles]);
 
-  const filterdRestaurants = searchRes
-    ? fuse.search(searchRes).map((result) => result.item)
-    : localRestaurants;
+  // const filterdRestaurants = searchRes
+  //   ? fuse.search(searchRes).map((result) => result.item)
+  //   : localRestaurants;
 
   return (
     <>
@@ -52,13 +52,13 @@ export default function AdminsTable({ users }: AdminTableProps) {
           <SearchIcon className="absolute left-2 size-4" />
           <Input
             className="bg-muted h-12 pl-8 text-sm"
-            placeholder="Search Admins"
+            placeholder="Search Roles"
             value={searchRes}
             onChange={(e) => setSearchRes(e.target.value)}
           />
         </div>
         <div className="w-full">
-          <Link href="/dashboard/superadmin/admins/new/">
+          <Link href="/dashboard/superadmin/role/new/">
             <Button variant="outline" className="h-12 cursor-pointer font-bold">
               Create
             </Button>
@@ -70,45 +70,42 @@ export default function AdminsTable({ users }: AdminTableProps) {
           <TableHeader>
             <TableRow className="bg-muted">
               <TableHead>No.</TableHead>
-              <TableHead>Profile</TableHead>
-              <TableHead>Full Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Permissions</TableHead>
+              <TableHead>Role Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Permission Count</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Updated At</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((user, index) => {
+            {data.map((role, index) => {
               return (
                 <TableRow
-                  key={user.id}
+                  key={role.id}
                   className={`${index % 2 !== 0 ? "bg-muted" : ""} border-none`}
                 >
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    {user.profile_picture && (
-                      <SafeRestaurantImage
-                        src={user.profile_picture}
-                        alt={`${user.first_name} logo`}
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {`${user.first_name} ${user.last_name}`}
+                  <TableCell>{role.name}</TableCell>
+                  <TableCell className="font-medium">
+                    {role.description}
                   </TableCell>
 
-                  <TableCell>{user.email ?? "N/A"}</TableCell>
-                  <TableCell>{user.phone_number ?? "N/A"}</TableCell>
+                  <TableCell>{role.Permissions.length}</TableCell>
                   <TableCell>
-                    <span
-                      className={`rounded px-2 py-1 text-sm font-medium ${user.is_active ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
-                    >
-                      {user.is_active ? "Active" : "Pending"}
-                    </span>
+                    {new Date(role.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </TableCell>
-                  <TableCell>{user.permissions.fromRole.length}</TableCell>
+                  <TableCell>
+                    {new Date(role.updatedAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </TableCell>
 
                   <TableCell>
                     <DropdownMenu>
@@ -124,16 +121,14 @@ export default function AdminsTable({ users }: AdminTableProps) {
                           <Link href="#">Detail</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Edit</Link>
+                          <Link
+                            href={`/dashboard/superadmin/role/new/${role.id}/edit`}
+                          >
+                            Edit
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">
-                            {user.is_active ? (
-                              <span>Deactivate</span>
-                            ) : (
-                              <span>Activate</span>
-                            )}
-                          </Link>
+                          <Link href="#">Delete</Link>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

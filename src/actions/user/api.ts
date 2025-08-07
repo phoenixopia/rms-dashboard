@@ -7,7 +7,7 @@ export const getAllCreatedUsers = async (
   page: number = 1,
   limit: number = 10,
 ): Promise<BackendAdminResponse> => {
-  const url = `${BASEURL}/user/get-all-users`;
+  const url = `${BASEURL}/user/get-all-users?page=${page}&limit=${limit}`;
   const authToken = await getAuthToken();
 
   const response = await fetch(url, {

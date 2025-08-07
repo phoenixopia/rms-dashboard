@@ -46,7 +46,7 @@ export interface BackendResponse {
 export type PermissionNames = string[];
 
 export interface Permission {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -72,7 +72,7 @@ export interface UsersResponse {
   total: number;
   page: number;
   limit: number;
-  users: User[];
+  data: User[];
 }
 
 export interface BackendAdminResponse {
@@ -86,6 +86,10 @@ export type PermissionNames = string[];
 
 export interface AdminLoginData {
   id: string;
+  full_name: string;
+  email?: string | null;
+  phone_number: string | null;
+  profile_picture?: string | null;
   role: string | null;
   permissions: PermissionNames;
   restaurant_id: string | null;
@@ -98,4 +102,42 @@ export interface BackendAdminLoginResponse {
   message: string;
   token: string;
   data: AdminLoginData;
+}
+
+// Roles
+// export interface Permission {
+//   id: string;
+//   name: string;
+// }
+
+export interface RoleData {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  Permissions: Permission[];
+}
+
+export interface RoleResponse {
+  success: boolean;
+  message: string;
+  data: RoleData[];
+}
+
+export interface SingleRoleResponse {
+  success: boolean;
+  message: string;
+  data: RoleData;
+}
+
+export interface PermissionsApiResponse {
+  success: boolean;
+  message: string;
+  data: {
+    total: number;
+    page: number;
+    limit: number;
+    permissions: Permission[];
+  };
 }

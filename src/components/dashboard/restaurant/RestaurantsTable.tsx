@@ -10,10 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table"; // Assuming shadcn-ui table is here
 import { Restaurant } from "@/types";
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
-import { Edit, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";

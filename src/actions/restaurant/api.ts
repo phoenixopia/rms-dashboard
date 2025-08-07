@@ -18,7 +18,7 @@ export const getAllRestaurantsWithSubscriptions = async (
     throw new Error("Authentication token not found.");
   }
 
-  console.log("Token", authToken);
+  // console.log("Token", authToken);
 
   const response = await fetch(url, {
     cache: "no-store",

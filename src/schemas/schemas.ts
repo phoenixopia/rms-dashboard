@@ -38,3 +38,12 @@ export const createRestaurantAdminSchema = z.object({
 export type CreateRestaurantAdminValues = z.infer<
   typeof createRestaurantAdminSchema
 >;
+
+// Role Schema
+export const createRoleFormSchema = z.object({
+  name: z.string().min(1, "Role name is required."),
+  description: z.string().optional().or(z.literal("")),
+  permissions: z.array(z.string()).optional(),
+});
+
+export type RoleFormValues = z.infer<typeof createRoleFormSchema>;

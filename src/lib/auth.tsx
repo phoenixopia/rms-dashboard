@@ -8,6 +8,10 @@ type Role = "super_admin" | "restaurant_admin" | "staff";
 
 interface User {
   id: string;
+  full_name?: string;
+  email?: string | null;
+  phone_number?: string | null;
+  profile_picture?: string | null;
   role: Role | null;
   permissions?: string[];
   restaurant_id?: string | null;
@@ -59,10 +63,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [user, isLoggingIn, router]);
 
   const login = (response: {
-    // Renamed data to response for clarity
     success: boolean;
-    data: BackendAdminLoginResponse; // This is the full backend response
-    requiresPasswordChange?: boolean; // This flag comes from loginApi's return
+    data: BackendAdminLoginResponse;
+    requiresPasswordChange?: boolean;
   }) => {
     const adminLoginData: AdminLoginData = response.data.data;
     const requiresPasswordChangeFromApi =
@@ -84,7 +87,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Admin Login Data", adminLoginData);
       userData = {
         id: adminLoginData.id,
-        role: adminLoginData.role as Role, // Cast to Role type if confident
+        full_name: adminLoginData.full_name,
+        email: adminLoginData.email,
+        phone_number: adminLoginData.phone_number,
+        profile_picture: adminLoginData.profile_picture,
+        role: adminLoginData.role as Role,
         permissions: adminLoginData.permissions,
         restaurant_id: adminLoginData.restaurant_id,
         branch_id: adminLoginData.branch_id,

@@ -42,7 +42,7 @@ export default function LoginForm() {
       const response = await loginApi(payload);
       if (response.success && response.data) {
         toast.success("Logged In Succesful");
-        console.log("Response", response);
+
         login({
           success: response.success,
           data: response.data,

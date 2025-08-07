@@ -25,6 +25,8 @@ import { SidebarTrigger } from "../ui/sidebar";
 export function DashboardHeader() {
   const { user, logout } = useAuth();
 
+  console.log("User", user);
+
   //   const fullName =
   //     user?.first_name && user?.last_name
   //       ? `${user.first_name} ${user.last_name}`
@@ -41,15 +43,20 @@ export function DashboardHeader() {
           <SidebarTrigger variant="secondary" className="cursor-pointer" />
           <Avatar className="h-9 w-9">
             <AvatarImage
-              src="https://cdn-icons-png.flaticon.com/128/15842/15842998.png"
-              alt={"Test Admin"}
+              src={
+                user?.profile_picture ??
+                "https://cdn-icons-png.flaticon.com/128/15842/15842998.png"
+              }
+              alt={user?.full_name ?? "Test Admin"}
             />
-            <AvatarFallback>{"Test Admin"}</AvatarFallback>
+            <AvatarFallback>{user?.full_name ?? "Test Admin"}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="text-sm font-medium">{"Test Admin"}</span>
+            <span className="text-sm font-medium">
+              {user?.full_name ?? "Test Admin"}
+            </span>
             <span className="text-muted-foreground text-xs">
-              {"testadmin@gmail.com"}
+              {user?.email ?? user?.phone_number ?? "N/A"}
             </span>
           </div>
         </div>
