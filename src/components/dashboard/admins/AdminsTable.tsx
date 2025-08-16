@@ -10,10 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table"; // Assuming shadcn-ui table is here
 import { User } from "@/types";
-import Image from "next/image";
+// import Image from "next/image";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
-import { Edit, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -65,85 +65,84 @@ export default function AdminsTable({ users }: AdminTableProps) {
           </Link>
         </div>
       </div>
-      <div className="bg-card rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted">
-              <TableHead>No.</TableHead>
-              <TableHead>Profile</TableHead>
-              <TableHead>Full Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Permissions</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {users.map((user, index) => {
-              return (
-                <TableRow
-                  key={user.id}
-                  className={`${index % 2 !== 0 ? "bg-muted" : ""} border-none`}
-                >
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    {user.profile_picture && (
-                      <SafeRestaurantImage
-                        src={user.profile_picture}
-                        alt={`${user.first_name} logo`}
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {`${user.first_name} ${user.last_name}`}
-                  </TableCell>
+      {users.length === 0 ? (
+        <h1 className="flex items-center justify-center">Empty Record</h1>
+      ) : (
+        <div className="bg-card rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted">
+                <TableHead>No.</TableHead>
+                <TableHead>Profile</TableHead>
+                <TableHead>Full Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Permission Count</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users.map((user, index) => {
+                return (
+                  <TableRow
+                    key={user.id}
+                    className={`${index % 2 !== 0 ? "bg-muted" : ""} border-none`}
+                  >
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      {user.profile_picture && (
+                        <SafeRestaurantImage
+                          src={user.profile_picture}
+                          alt={`${user.full_name} logo`}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell>{user.full_name}</TableCell>
 
-                  <TableCell>{user.email ?? "N/A"}</TableCell>
-                  <TableCell>{user.phone_number ?? "N/A"}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`rounded px-2 py-1 text-sm font-medium ${user.is_active ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
-                    >
-                      {user.is_active ? "Active" : "Pending"}
-                    </span>
-                  </TableCell>
-                  <TableCell>{user.permissions.fromRole.length}</TableCell>
+                    <TableCell>{user.email ?? "N/A"}</TableCell>
+                    <TableCell>{user.phone_number ?? "N/A"}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`rounded px-2 py-1 text-sm font-medium ${user.is_active ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
+                      >
+                        {user.is_active ? "Active" : "Pending"}
+                      </span>
+                    </TableCell>
+                    <TableCell>{user.Role.name}</TableCell>
 
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <div className="cursor-pointer rounded-sm bg-[#FF7632] px-3 py-1 text-sm text-white">
-                          Action
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="bg-background">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Detail</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Edit</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">
-                            {user.is_active ? (
-                              <span>Deactivate</span>
-                            ) : (
-                              <span>Activate</span>
-                            )}
-                          </Link>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+                    <TableCell>{user.Role.total_permission}</TableCell>
+
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <div className="cursor-pointer rounded-sm bg-[#FF7632] px-3 py-1 text-sm text-white">
+                            Action
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="bg-background">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link href="#">Detail</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link href="#">Edit</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link href="#">Delete</Link>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </>
   );
 }

@@ -66,126 +66,130 @@ export default function RestaurantsTable({
           </Link>
         </div>
       </div>
-      <div className="bg-card rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted">
-              <TableHead>No.</TableHead>
-              <TableHead>Logo</TableHead>
-              <TableHead>Restaurant Name</TableHead>
-              <TableHead>Plan</TableHead>
-              <TableHead>Billing Cycle</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Start Date</TableHead>
-              <TableHead>End Date</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {restaurants.map((restaurant, index) => {
-              const statusStyles: Record<string, string> = {
-                trial: "bg-yellow-100 text-yellow-800",
-                active: "bg-green-100 text-green-800",
-                expired: "bg-red-100 text-red-800",
-                pending: "bg-yellow-100 text-yellow-800",
-                cancelled: "bg-gray-100 text-gray-800",
-              };
-              return (
-                <TableRow
-                  key={restaurant.id}
-                  className={`${index % 2 !== 0 ? "bg-muted" : ""} border-none`}
-                >
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>
-                    {restaurant.SystemSetting?.logo_url && (
-                      <SafeRestaurantImage
-                        src={restaurant.SystemSetting.logo_url}
-                        alt={`${restaurant.restaurant_name} logo`}
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {restaurant.restaurant_name}
-                  </TableCell>
+      {restaurants.length === 0 ? (
+        <div className="flex items-center justify-center">No Record</div>
+      ) : (
+        <div className="bg-card rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted">
+                <TableHead>No.</TableHead>
+                <TableHead>Logo</TableHead>
+                <TableHead>Restaurant Name</TableHead>
+                <TableHead>Plan</TableHead>
+                <TableHead>Billing Cycle</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Start Date</TableHead>
+                <TableHead>End Date</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {restaurants.map((restaurant, index) => {
+                const statusStyles: Record<string, string> = {
+                  trial: "bg-yellow-100 text-yellow-800",
+                  active: "bg-green-100 text-green-800",
+                  expired: "bg-red-100 text-red-800",
+                  pending: "bg-yellow-100 text-yellow-800",
+                  cancelled: "bg-gray-100 text-gray-800",
+                };
+                return (
+                  <TableRow
+                    key={restaurant.id}
+                    className={`${index % 2 !== 0 ? "bg-muted" : ""} border-none`}
+                  >
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>
+                      {restaurant.SystemSetting?.logo_url && (
+                        <SafeRestaurantImage
+                          src={restaurant.SystemSetting.logo_url}
+                          alt={`${restaurant.restaurant_name} logo`}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {restaurant.restaurant_name}
+                    </TableCell>
 
-                  <TableCell>
-                    {restaurant.Subscriptions.length > 0
-                      ? restaurant.Subscriptions[0].Plan.name
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    {restaurant.Subscriptions.length > 0
-                      ? restaurant.Subscriptions[0].Plan.billing_cycle
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    {
-                      <span
-                        className={`rounded px-2 py-1 text-sm font-medium ${
-                          statusStyles[restaurant.status] ||
-                          "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {restaurant.status}
-                      </span>
-                    }
-                  </TableCell>
-                  <TableCell>
-                    {restaurant.Subscriptions.length > 0
-                      ? new Date(
-                          restaurant.Subscriptions[0].start_date,
-                        ).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    {restaurant.Subscriptions.length > 0
-                      ? new Date(
-                          restaurant.Subscriptions[0].end_date,
-                        ).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <div className="cursor-pointer rounded-sm bg-[#FF7632] px-3 py-1 text-sm text-white">
-                          Action
-                        </div>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="bg-background">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Detail</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Edit</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">
-                            {restaurant.status !== "active" ? (
-                              <span>Activate</span>
-                            ) : (
-                              <span>Deactivate</span>
-                            )}
-                          </Link>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+                    <TableCell>
+                      {restaurant.Subscriptions.length > 0
+                        ? restaurant.Subscriptions[0].Plan.name
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      {restaurant.Subscriptions.length > 0
+                        ? restaurant.Subscriptions[0].Plan.billing_cycle
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      {
+                        <span
+                          className={`rounded px-2 py-1 text-sm font-medium ${
+                            statusStyles[restaurant.status] ||
+                            "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          {restaurant.status}
+                        </span>
+                      }
+                    </TableCell>
+                    <TableCell>
+                      {restaurant.Subscriptions.length > 0
+                        ? new Date(
+                            restaurant.Subscriptions[0].start_date,
+                          ).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      {restaurant.Subscriptions.length > 0
+                        ? new Date(
+                            restaurant.Subscriptions[0].end_date,
+                          ).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <div className="cursor-pointer rounded-sm bg-[#FF7632] px-3 py-1 text-sm text-white">
+                            Action
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="bg-background">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link href="#">Detail</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link href="#">Edit</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">
+                            <Link href="#">
+                              {restaurant.status !== "active" ? (
+                                <span>Activate</span>
+                              ) : (
+                                <span>Deactivate</span>
+                              )}
+                            </Link>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </>
   );
 }

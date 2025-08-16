@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "@/i18n/navigation";
 import { AdminLoginData, BackendAdminLoginResponse } from "@/types";
 
-type Role = "super_admin" | "restaurant_admin" | "staff";
+type Role = "super_admin" | "restaurant_admin" | "staff" | "customer" | "other";
 
 interface User {
   id: string;
@@ -12,7 +12,8 @@ interface User {
   email?: string | null;
   phone_number?: string | null;
   profile_picture?: string | null;
-  role: Role | null;
+  role_tag?: string | null;
+  role_name?: string | null;
   permissions?: string[];
   restaurant_id?: string | null;
   branch_id?: string | null;
@@ -76,7 +77,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Apple - Requires Password Change");
       userData = {
         id: adminLoginData.id, // Use id from adminLoginData
-        role: null, // Role is not fully set until password is changed
+        role_tag: null,
+        role_name: null, // Role is not fully set until password is changed
         permissions: [], // No permissions until password is changed
         restaurant_id: null,
         branch_id: null,
@@ -91,7 +93,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email: adminLoginData.email,
         phone_number: adminLoginData.phone_number,
         profile_picture: adminLoginData.profile_picture,
-        role: adminLoginData.role as Role,
+        role_name: adminLoginData.role_name,
+        role_tag: adminLoginData.role_tag as Role,
         permissions: adminLoginData.permissions,
         restaurant_id: adminLoginData.restaurant_id,
         branch_id: adminLoginData.branch_id,

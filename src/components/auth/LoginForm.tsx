@@ -15,6 +15,7 @@ import { useState, useTransition } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { getAuthToken } from "@/auth/auth";
 
 type FormData = z.infer<typeof loginSchema>;
 

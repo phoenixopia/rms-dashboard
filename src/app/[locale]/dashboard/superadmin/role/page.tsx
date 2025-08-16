@@ -1,9 +1,9 @@
 import { getAllRoles } from "@/actions/role/api";
 import SuperAdminRoleTable from "@/components/dashboard/role/SuperAdminRoleTable";
-import { RoleResponse } from "@/types";
+import { RoleData, RoleResponse } from "@/types";
 
 export default async function SuperAdminRolePage() {
-  let data: RoleResponse | null = null;
+  let data: RoleData[] = [];
   let error: string | null = null;
 
   try {
@@ -17,14 +17,14 @@ export default async function SuperAdminRolePage() {
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
 
-  if (!data || data.data.length === 0) {
+  if (!data || data.length === 0) {
     return <div className="p-4 text-center">No Record Found</div>;
   }
 
   return (
     <div className="container mx-auto py-5">
       <h1 className="mb-4 text-2xl font-bold">Restaurants</h1>
-      <SuperAdminRoleTable data={data.data} />
+      <SuperAdminRoleTable data={data} />
       {/* <div className="mt-4">
         <Pagination
           currentPage={data.page}

@@ -16,6 +16,7 @@ import {
   Camera,
   CreditCard,
   LucideIcon,
+  Banknote,
 } from "lucide-react";
 
 export interface RouteItem {
@@ -38,6 +39,7 @@ export const roleRoutes: Record<string, RouteItem[]> = {
     },
     { href: "/dashboard/superadmin/admins", label: "Admins", icon: Users },
     { href: "/dashboard/superadmin/role", label: "Roles", icon: ShieldCheck },
+    { href: "/dashboard/superadmin/plan", label: "Plans", icon: Banknote },
     { href: "/subscriptions", label: "Subscriptions", icon: BadgeDollarSign },
     { href: "/social-media", label: "Approve Videos", icon: Video },
     { href: "/logs", label: "Logs", icon: FileClock },

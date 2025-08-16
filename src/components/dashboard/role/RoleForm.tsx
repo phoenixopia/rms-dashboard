@@ -3,15 +3,23 @@ import { createRole, updateRole } from "@/actions/role/api";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "@/i18n/navigation";
 import { createRoleFormSchema, RoleFormValues } from "@/schemas/schemas";
-import { Permission, RoleData } from "@/types";
+import { Permission, RoleData, RoleTag } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface RoleFormProps {
   role?: RoleData | null;
   allPermissions: Permission[];
+  allRoleTags: RoleTag[];
   onSuccess: () => void;
 }
 
@@ -22,9 +30,13 @@ import { toast } from "sonner";
 export default function RoleForm({
   role,
   allPermissions,
+  allRoleTags,
   onSuccess,
 }: RoleFormProps) {
   const isUpdateMode = !!role;
+
+  // const dRoleTagId =
+  //   allRoleTags.find((r) => r.name === role?.role_tag_name)?.id || "";
 
   const {
     register,
@@ -38,7 +50,8 @@ export default function RoleForm({
     defaultValues: {
       name: role?.name || "",
       description: role?.description || "",
-      permissions: role?.Permissions.map((p) => p.id) || [],
+      permissionIds: role?.permissions.map((p) => p.id) || [],
+      role_tag_id: role?.role_tag?.id || "",
     },
   });
 
@@ -46,18 +59,19 @@ export default function RoleForm({
     reset({
       name: role?.name || "",
       description: role?.description || "",
-      permissions: role?.Permissions.map((p) => p.id) || [],
+      permissionIds: role?.permissions.map((p) => p.id) || [],
+      role_tag_id: role?.role_tag?.id || "",
     });
   }, [role, reset]);
 
-  const permissions = watch("permissions") || [];
+  const permissions = watch("permissionIds") || [];
 
   const togglePermission = (id: string) => {
     const updated = permissions.includes(id)
       ? permissions.filter((pid) => pid !== id)
       : [...permissions, id];
 
-    setValue("permissions", updated);
+    setValue("permissionIds", updated);
   };
 
   const onSubmit = async (values: RoleFormValues) => {
@@ -111,6 +125,31 @@ export default function RoleForm({
           <p className="text-sm text-red-500">{errors.description.message}</p>
         )}
       </div>
+      {/* Role Tag Select */}
+      <div className="flex w-5/6 flex-col gap-2">
+        <label className="block font-medium">Role Tag</label>
+        <Select
+          value={watch("role_tag_id") || "none"}
+          onValueChange={(value) =>
+            setValue("role_tag_id", value === "none" ? "" : value)
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select a role tag" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">None</SelectItem>
+            {allRoleTags.map((tag) => (
+              <SelectItem key={tag.id} value={tag.id}>
+                {tag.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors.role_tag_id && (
+          <p className="text-sm text-red-500">{errors.role_tag_id.message}</p>
+        )}
+      </div>
 
       {/* Permissions */}
       <div className="flex w-5/6 flex-col gap-2">
@@ -134,9 +173,9 @@ export default function RoleForm({
             </div>
           ))}
         </div>
-        {errors.permissions && (
+        {errors.permissionIds && (
           <p className="mt-2 text-sm text-red-500">
-            {errors.permissions.message}
+            {errors.permissionIds.message}
           </p>
         )}
       </div>

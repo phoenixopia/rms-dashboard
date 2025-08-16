@@ -39,39 +39,39 @@ export const getAllRestaurantsWithSubscriptions = async (
   return data.data;
 };
 
-export async function createRestaurant(prevState: any, formData: FormData) {
+export async function createRestaurant(formData: FormData) {
   const validatedFields = createRestaurantSchema.safeParse({
     restaurant_name: formData.get("restaurant_name"),
     restaurant_admin_id: formData.get("restaurant_admin_id"),
     language: formData.get("language"),
     theme: formData.get("theme"),
     primary_color: formData.get("primary_color"),
-    rtl_enabled: formData.get("rtl_enabled") === "on",
+    rtl_enabled:
+      formData.get("rtl_enabled") === "true" ||
+      formData.get("rtl_enabled") === "on",
   });
+
+  console.log("Restaurant Create Data", validatedFields.data);
 
   if (!validatedFields.success) {
     return {
+      success: false,
       errors: validatedFields.error.flatten().fieldErrors,
       message: "Validation failed. Please check the form.",
     };
   }
 
   const { ...rest } = validatedFields.data;
-  const payload = new FormData();
-
-  Object.entries(rest).forEach(([key, value]) => {
-    if (value !== null && value !== undefined) {
-      payload.append(key, String(value));
-    }
-  });
 
   try {
     const authToken = await getAuthToken();
 
-    const response = await api.post("/restaurant/register", payload, {
+    // console.log("Rest", rest);
+
+    const response = await api.post("/restaurant/register", rest, {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     });
 

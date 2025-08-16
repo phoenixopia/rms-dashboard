@@ -1,13 +1,14 @@
 "use client";
 
-import { getAllPermissions } from "@/actions/role/api";
+import { getAllPermissions, getAllRoleTags } from "@/actions/role/api";
 import RoleForm from "@/components/dashboard/role/RoleForm";
 import { useRouter } from "@/i18n/navigation";
-import { Permission } from "@/types";
+import { Permission, RoleTag } from "@/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function CreateRolePage() {
+  const [role_tags, setRoleTags] = useState<RoleTag[]>([]);
   const [permissions, setPermissions] = useState<Permission[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -15,6 +16,13 @@ export default function CreateRolePage() {
   useEffect(() => {
     async function fetchPermissions() {
       try {
+        const [roleTags, allPerms] = await Promise.all([
+          getAllRoleTags(),
+          getAllPermissions(),
+        ]);
+        setRoleTags(roleTags);
+        setPermissions(allPerms);
+
         const data: Permission[] = await getAllPermissions();
         setPermissions(data);
       } catch (err) {
@@ -32,6 +40,7 @@ export default function CreateRolePage() {
     <div className="container py-5">
       <RoleForm
         allPermissions={permissions}
+        allRoleTags={role_tags}
         onSuccess={() => router.push("/dashboard/superadmin/role")}
       />
     </div>

@@ -3,6 +3,8 @@ import {
   PermissionsApiResponse,
   RoleData,
   RoleResponse,
+  RoleTag,
+  RoleTagResponse,
   SingleRoleResponse,
 } from "@/types";
 import api, { BASEURL } from "../api";
@@ -10,7 +12,7 @@ import { getAuthToken } from "@/auth/auth";
 import { createRoleFormSchema, RoleFormValues } from "@/schemas/schemas";
 
 export const getAllPermissions = async (): Promise<Permission[]> => {
-  const url = `${BASEURL}/rbac/permissions?limit=1000`;
+  const url = `${BASEURL}/rbac/all-permission?limit=1000`;
 
   const authToken = await getAuthToken();
 
@@ -33,7 +35,30 @@ export const getAllPermissions = async (): Promise<Permission[]> => {
   const data: PermissionsApiResponse = await response.json();
   return data.data.permissions;
 };
+export const getAllRoleTags = async (): Promise<RoleTag[]> => {
+  const url = `${BASEURL}/rbac/all-role-tags?limit=1000`;
 
+  const authToken = await getAuthToken();
+
+  if (!authToken) {
+    throw new Error("Authentication token not found.");
+  }
+
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
+  }
+
+  const data: RoleTagResponse = await response.json();
+  return data.data;
+};
 export const getRoleById = async (roleId: string): Promise<RoleData> => {
   const url = `${BASEURL}/rbac/roles/${roleId}`;
 
@@ -59,8 +84,8 @@ export const getRoleById = async (roleId: string): Promise<RoleData> => {
   return data.data;
 };
 
-export const getAllRoles = async (): Promise<RoleResponse> => {
-  const url = `${BASEURL}/rbac/roles`;
+export const getAllRoles = async (): Promise<RoleData[]> => {
+  const url = `${BASEURL}/rbac/all-roles`;
 
   const authToken = await getAuthToken();
 
@@ -81,14 +106,15 @@ export const getAllRoles = async (): Promise<RoleResponse> => {
   }
 
   const data: RoleResponse = await response.json();
-  return data;
+  return data.data.roles;
 };
 
 export async function createRole(formData: RoleFormValues) {
   const validatedFields = createRoleFormSchema.safeParse({
     name: formData.name,
     description: formData.description,
-    permissions: formData.permissions,
+    role_tag_id: formData.role_tag_id,
+    permissionIds: formData.permissionIds,
   });
 
   if (!validatedFields.success) {
@@ -119,7 +145,8 @@ export async function updateRole(formData: RoleFormValues, roleId: string) {
   const validatedFields = createRoleFormSchema.safeParse({
     name: formData.name,
     description: formData.description,
-    permissions: formData.permissions,
+    role_tag_id: formData.role_tag_id,
+    permissionIds: formData.permissionIds,
   });
 
   if (!validatedFields.success) {
@@ -129,6 +156,10 @@ export async function updateRole(formData: RoleFormValues, roleId: string) {
       message: "Validation failed.",
     };
   }
+
+  console.log("Data validation", validatedFields.data);
+
+  console.log("Permissions", validatedFields.data.permissionIds);
 
   try {
     const authToken = await getAuthToken();

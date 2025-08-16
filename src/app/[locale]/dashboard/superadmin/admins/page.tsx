@@ -24,13 +24,13 @@ export default async function AdminsPages({ searchParams }: AdminsPageProps) {
     error = "Failed to load admins. Please try again later.";
   }
 
-  const totalPages = data ? Math.ceil(data.data.total / data.data.limit) : 1;
+  const totalPages = data ? Math.ceil(data.data.total / data.data.pages) : 1;
 
   if (error) {
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
 
-  if (!data || data.data.data.length === 0) {
+  if (!data) {
     return <div className="p-4 text-center">No admins found.</div>;
   }
   return (
@@ -41,7 +41,7 @@ export default async function AdminsPages({ searchParams }: AdminsPageProps) {
         <Pagination
           currentPage={data.data.page}
           totalPages={totalPages}
-          limit={data.data.limit}
+          limit={data.data.pages}
         />
       </div>
     </div>

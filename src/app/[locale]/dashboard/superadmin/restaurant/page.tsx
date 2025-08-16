@@ -32,7 +32,7 @@ export default async function SuperAdminRestaurantPage({
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
 
-  if (!data || data.data.length === 0) {
+  if (!data) {
     return <div className="p-4 text-center">No restaurants found.</div>;
   }
 

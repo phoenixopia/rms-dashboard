@@ -58,20 +58,26 @@ export interface UserPermissions {
 export interface User {
   id: string;
   email?: string | null;
-  first_name: string;
-  last_name: string;
+  full_name: string;
   phone_number?: string | null;
   profile_picture?: string | null;
   is_active: boolean;
-  role_id: number;
-  created_by: number;
-  permissions: UserPermissions;
+  Role: {
+    id: string;
+    name: string;
+    total_permission: string;
+  };
+
+  RoleTag: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface UsersResponse {
   total: number;
   page: number;
-  limit: number;
+  pages: number;
   data: User[];
 }
 
@@ -90,7 +96,8 @@ export interface AdminLoginData {
   email?: string | null;
   phone_number: string | null;
   profile_picture?: string | null;
-  role: string | null;
+  role_tag?: string | null;
+  role_name?: string | null;
   permissions: PermissionNames;
   restaurant_id: string | null;
   branch_id: string | null;
@@ -114,15 +121,25 @@ export interface RoleData {
   id: string;
   name: string;
   description: string;
-  createdAt: string;
-  updatedAt: string;
-  Permissions: Permission[];
+  role_tag: Permission;
+  restaurant_name?: string | null;
+  permission_count: number;
+
+  permissions: Permission[];
+}
+
+export interface RolePagination {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  roles: RoleData[];
 }
 
 export interface RoleResponse {
   success: boolean;
   message: string;
-  data: RoleData[];
+  data: RolePagination;
 }
 
 export interface SingleRoleResponse {
@@ -140,4 +157,17 @@ export interface PermissionsApiResponse {
     limit: number;
     permissions: Permission[];
   };
+}
+
+// Role Tag
+export interface RoleTagResponse {
+  success: boolean;
+  message: string;
+  data: RoleTag[];
+}
+
+export interface RoleTag {
+  id: string;
+  name: string;
+  description: string;
 }

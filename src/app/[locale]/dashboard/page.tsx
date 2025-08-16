@@ -9,6 +9,7 @@ export default function DashboardNavigator() {
   return user?.role === "super_admin" ? (
     <AdminDashboard />
   ) : (
-    <RestaurantAdminDashboard />
+    <AdminDashboard />
+    // <RestaurantAdminDashboard />
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -32,9 +32,9 @@ import { createRestaurant } from "@/actions/restaurant/api";
 import { Link } from "@/i18n/navigation";
 
 export function CreateRestaurantForm() {
-  const [state, formAction] = useActionState(createRestaurant, null);
   const [admins, setAdmins] = useState<User[]>([]);
   const [loadingAdmins, setLoadingAdmins] = useState(true);
+  const [isPending, startTransition] = useTransition();
 
   const {
     register,
@@ -42,7 +42,8 @@ export function CreateRestaurantForm() {
     watch,
     setValue,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors },
+    reset,
   } = useForm<CreateRestaurantFormValues>({
     resolver: zodResolver(createRestaurantSchema),
     defaultValues: {
@@ -60,7 +61,7 @@ export function CreateRestaurantForm() {
     async function fetchAdmins() {
       setLoadingAdmins(true);
       try {
-        const response = await getAllCreatedUsers();
+        const response = await getAllCreatedUsers(1, 100);
         setAdmins(response.data.data);
       } catch (e) {
         toast.error("Failed to fetch admin users.");
@@ -71,24 +72,40 @@ export function CreateRestaurantForm() {
     fetchAdmins();
   }, []);
 
-  useEffect(() => {
-    if (state?.message) {
-      toast.error(state.message);
-    }
-    if (state?.errors) {
-      Object.keys(state.errors).forEach((key) => {
-        setError(key as keyof CreateRestaurantFormValues, {
-          type: "server",
-          message: state.errors[key as keyof typeof state.errors]?.[0],
-        });
+  const onSubmit = (values: CreateRestaurantFormValues) => {
+    startTransition(async () => {
+      const formData = new FormData();
+      Object.entries(values).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
       });
-    }
-  }, [state, setError]);
+
+      const result = await createRestaurant(formData);
+
+      if (!result.success) {
+        if (result.errors) {
+          Object.entries(result.errors).forEach(([key, msgs]) => {
+            if (msgs?.[0]) {
+              setError(key as keyof CreateRestaurantFormValues, {
+                type: "server",
+                message: msgs[0],
+              });
+            }
+          });
+        }
+        toast.error(result.message);
+        return;
+      }
+
+      toast.success(result.message);
+      reset();
+    });
+  };
 
   return (
     <form
-      action={formAction}
-      // onSubmit={handleSubmit(() => {})}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col items-center justify-start gap-4 py-10"
     >
       <div className="flex w-4/6 justify-between gap-2 lg:w-3/6">
@@ -127,7 +144,7 @@ export function CreateRestaurantForm() {
           <SelectContent>
             {admins.map((admin) => (
               <SelectItem key={admin.id} value={admin.id.toString()}>
-                {admin.first_name} {admin.last_name} ({admin.email})
+                {admin.full_name} ({admin.email})
               </SelectItem>
             ))}
           </SelectContent>
@@ -189,8 +206,8 @@ export function CreateRestaurantForm() {
         )}
       </div>
 
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Creating..." : "Create Restaurant"}
+      <Button type="submit" disabled={isPending}>
+        {isPending ? "Creating..." : "Create Restaurant"}
       </Button>
     </form>
   );

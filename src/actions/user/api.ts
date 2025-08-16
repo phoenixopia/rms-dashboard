@@ -37,8 +37,11 @@ export async function createRestaurantAdminAction(
     phone_number: formData.get("phone_number") || "",
     password: formData.get("password"),
     creatorMode: formData.get("creatorMode"),
-    restaurant_id: formData.get("restaurant_id") || undefined,
+    role_id: formData.get("role_id"),
+    // restaurant_id: formData.get("restaurant_id") || undefined,
   });
+
+  console.log("AdminData", parsed.data);
 
   if (!parsed.success) {
     return {

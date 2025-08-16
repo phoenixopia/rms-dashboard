@@ -12,7 +12,7 @@ export const loginApi = async (payload: {
       payload,
     );
 
-    console.log("BackendAdminLoginResponse", res);
+    // console.log("BackendAdminLoginResponse", res);
     const requiresPasswordChange = res.data.data?.requiresPasswordChange;
 
     return {

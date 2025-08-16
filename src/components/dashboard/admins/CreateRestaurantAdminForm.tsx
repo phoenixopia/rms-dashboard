@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTransition } from "react";
@@ -23,8 +23,13 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { RoleData } from "@/types";
 
-export function CreateRestaurantAdminForm() {
+interface adminFormProps {
+  roles: RoleData[];
+}
+
+export function CreateRestaurantAdminForm({ roles }: adminFormProps) {
   const [pending, startTransition] = useTransition();
   const [state, formAction] = useActionState(createRestaurantAdminAction, null);
 
@@ -33,7 +38,8 @@ export function CreateRestaurantAdminForm() {
     handleSubmit,
     setValue,
     watch,
-    setError,
+    // setError,
+    // clearErrors,
     formState: { errors },
   } = useForm<CreateRestaurantAdminValues>({
     resolver: zodResolver(createRestaurantAdminSchema),
@@ -41,10 +47,12 @@ export function CreateRestaurantAdminForm() {
       creatorMode: "email",
       email: "",
       phone_number: "",
+      role_id: "",
     },
   });
 
   const creatorMode = watch("creatorMode");
+  const selectedRole = watch("role_id");
 
   const onSubmit = (data: CreateRestaurantAdminValues) => {
     const formData = new FormData();
@@ -54,24 +62,16 @@ export function CreateRestaurantAdminForm() {
       }
     });
 
-    startTransition(() => formAction(formData));
-  };
+    startTransition(async () => {
+      const result = await createRestaurantAdminAction(null, formData);
 
-  if (state?.message) {
-    if (state.success) toast.success(state.message);
-    else toast.error(state.message);
-  }
-
-  if (state?.errors) {
-    Object.entries(state.errors).forEach(([field, msg]) => {
-      if (msg?.[0]) {
-        setError(field as keyof CreateRestaurantAdminValues, {
-          type: "server",
-          message: msg[0],
-        });
+      if (result.success) {
+        toast.success(result.message || "Admin created successfully!");
+      } else {
+        toast.error(result.message || "Failed to create admin.");
       }
     });
-  }
+  };
 
   return (
     <form
@@ -149,9 +149,34 @@ export function CreateRestaurantAdminForm() {
           )}
         </div>
       )}
+      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+        <Label htmlFor="role_id">Role</Label>
+        {/* <label className="block font-medium">Role Tag</label> */}
+        <Select
+          value={selectedRole || "none"}
+          onValueChange={(value) =>
+            setValue("role_id", value === "none" ? "" : value)
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select a role" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="none">None</SelectItem>
+            {roles.map((role) => (
+              <SelectItem key={role.id} value={role.id}>
+                {role.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors.role_id && (
+          <p className="text-sm text-red-500">{errors.role_id.message}</p>
+        )}
+      </div>
 
       {/* Optional: Assign restaurant */}
-      <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
+      {/* <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
         <Label htmlFor="restaurant_id">Restaurant ID</Label>
         <Input
           {...register("restaurant_id")}
@@ -160,7 +185,7 @@ export function CreateRestaurantAdminForm() {
         {errors.restaurant_id && (
           <p className="text-sm text-red-500">{errors.restaurant_id.message}</p>
         )}
-      </div>
+      </div> */}
 
       <Button type="submit" disabled={pending}>
         {pending ? "Creating..." : "Create Admin"}

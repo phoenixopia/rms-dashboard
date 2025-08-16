@@ -72,9 +72,11 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
               <TableHead>No.</TableHead>
               <TableHead>Role Name</TableHead>
               <TableHead>Description</TableHead>
+              <TableHead>Role Tag</TableHead>
+              <TableHead>Restaurant Name</TableHead>
               <TableHead>Permission Count</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Updated At</TableHead>
+              {/* <TableHead>Created At</TableHead>
+              <TableHead>Updated At</TableHead> */}
               <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -90,22 +92,10 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
                   <TableCell className="font-medium">
                     {role.description}
                   </TableCell>
+                  <TableCell>{role.role_tag?.name}</TableCell>
+                  <TableCell>{role.restaurant_name ?? "Unknown"}</TableCell>
 
-                  <TableCell>{role.Permissions.length}</TableCell>
-                  <TableCell>
-                    {new Date(role.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(role.updatedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </TableCell>
+                  <TableCell>{role.permission_count}</TableCell>
 
                   <TableCell>
                     <DropdownMenu>

@@ -34,7 +34,7 @@ export default function DashboardLayout({
 
   console.log("User Require Password change", user?.requiresPasswordChange);
 
-  const userRole = user?.role;
+  const userRole = user?.role_tag;
 
   console.log("User ", user);
   const routes = userRole ? roleRoutes[userRole] : [];
