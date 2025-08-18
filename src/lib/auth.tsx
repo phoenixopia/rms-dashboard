@@ -27,6 +27,7 @@ interface AuthContextValue {
     success: boolean;
     data: BackendAdminLoginResponse;
     requiresPasswordChange?: boolean;
+    token: string;
   }) => void;
   logout: () => void;
 }
@@ -67,8 +68,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     success: boolean;
     data: BackendAdminLoginResponse;
     requiresPasswordChange?: boolean;
+    token: string;
   }) => {
     const adminLoginData: AdminLoginData = response.data.data;
+
+    console.log(adminLoginData, "Admin Data");
     const requiresPasswordChangeFromApi =
       response.requiresPasswordChange || false;
 
@@ -103,6 +107,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     Cookies.set("auth", JSON.stringify(userData), { secure: true, expires: 7 });
+    Cookies.set("token", response?.token, {
+      secure: true,
+      expires: 7,
+    });
     setUser(userData);
 
     setIsLoggingIn(true);
@@ -110,6 +118,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     Cookies.remove("auth");
+    Cookies.remove("token");
     setUser(null);
     router.push("/login");
   };

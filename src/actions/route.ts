@@ -18,6 +18,7 @@ export const loginApi = async (payload: {
     return {
       success: true,
       data: res.data,
+      token: res.data.token,
       requiresPasswordChange: requiresPasswordChange,
     };
   } catch (e: any) {

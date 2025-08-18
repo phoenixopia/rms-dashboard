@@ -48,6 +48,7 @@ export default function LoginForm() {
           success: response.success,
           data: response.data,
           requiresPasswordChange: response.requiresPasswordChange,
+          token: response.data.token,
         });
       } else {
         toast.error("Error", {
