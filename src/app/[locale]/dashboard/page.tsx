@@ -6,7 +6,7 @@ import React from "react";
 
 export default function DashboardNavigator() {
   const { user } = useAuth();
-  return user?.role === "super_admin" ? (
+  return user?.role_tag === "super_admin" ? (
     <AdminDashboard />
   ) : (
     <AdminDashboard />

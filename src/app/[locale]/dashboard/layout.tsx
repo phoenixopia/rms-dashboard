@@ -32,11 +32,11 @@ export default function DashboardLayout({
     );
   }
 
-  console.log("User Require Password change", user?.requiresPasswordChange);
+  // console.log("User Require Password change", user?.requiresPasswordChange);
 
   const userRole = user?.role_tag;
 
-  console.log("User ", user);
+  // console.log("User ", user);
   const routes = userRole ? roleRoutes[userRole] : [];
 
   if (!routes || routes.length === 0) {
