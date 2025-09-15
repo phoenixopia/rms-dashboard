@@ -27,6 +27,7 @@ interface AuthContextValue {
     success: boolean;
     data: BackendAdminLoginResponse;
     requiresPasswordChange?: boolean;
+    token: string;
   }) => void;
   logout: () => void;
 }
@@ -67,26 +68,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     success: boolean;
     data: BackendAdminLoginResponse;
     requiresPasswordChange?: boolean;
+    token: string;
   }) => {
     const adminLoginData: AdminLoginData = response.data.data;
+
+
     const requiresPasswordChangeFromApi =
       response.requiresPasswordChange || false;
 
     let userData: User;
     if (requiresPasswordChangeFromApi) {
-      console.log("Apple - Requires Password Change");
+
       userData = {
-        id: adminLoginData.id, // Use id from adminLoginData
+        id: adminLoginData.id, 
         role_tag: null,
-        role_name: null, // Role is not fully set until password is changed
-        permissions: [], // No permissions until password is changed
+        role_name: null, 
+        permissions: [], 
         restaurant_id: null,
         branch_id: null,
         requiresPasswordChange: true,
       };
     } else {
-      console.log("Mango - Standard Login");
-      console.log("Admin Login Data", adminLoginData);
+  
       userData = {
         id: adminLoginData.id,
         full_name: adminLoginData.full_name,
@@ -103,6 +106,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     Cookies.set("auth", JSON.stringify(userData), { secure: true, expires: 7 });
+    Cookies.set("token", response?.token, {
+      secure: true,
+      expires: 7,
+    });
     setUser(userData);
 
     setIsLoggingIn(true);
@@ -110,6 +117,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     Cookies.remove("auth");
+    Cookies.remove("token");
     setUser(null);
     router.push("/login");
   };

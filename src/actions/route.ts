@@ -12,12 +12,13 @@ export const loginApi = async (payload: {
       payload,
     );
 
-    // console.log("BackendAdminLoginResponse", res);
+    
     const requiresPasswordChange = res.data.data?.requiresPasswordChange;
 
     return {
       success: true,
       data: res.data,
+      token: res.data.token,
       requiresPasswordChange: requiresPasswordChange,
     };
   } catch (e: any) {
@@ -33,7 +34,7 @@ export const changePasswordApi = async (payload: {
   newPassword: string;
 }) => {
   try {
-    console.log("User Id", payload.userId);
+
     const res = await api.post(
       `/auth/change-temp-password/${payload.userId}`,
       payload,

@@ -4,9 +4,9 @@ import { DashboardHeader } from "@/components/dashboard/DashBoardHeader";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/lib/auth";
-import { roleRoutes } from "@/lib/roleRoutes";
+import { allRoutes, filterRoutesByPermission } from "@/lib/roleRoutes";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function DashboardLayout({
   children,
@@ -15,14 +15,29 @@ export default function DashboardLayout({
 }) {
   const { isAuthenticated, user } = useAuth();
   const router = useRouter();
+  const [authChecked, setAuthChecked] = useState(false);
+
+
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login");
-    } else if (user?.requiresPasswordChange) {
-      router.push("/change-password");
+    if (user !== null) {
+      setAuthChecked(true);
+      
+      if (!isAuthenticated) {
+        router.push("/login");
+      } else if (user?.requiresPasswordChange) {
+        router.push("/change-password");
+      }
     }
   }, [isAuthenticated, user, router]);
+
+  if (!authChecked) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   if (!isAuthenticated || user?.requiresPasswordChange) {
     return (
@@ -32,12 +47,8 @@ export default function DashboardLayout({
     );
   }
 
-  // console.log("User Require Password change", user?.requiresPasswordChange);
-
-  const userRole = user?.role_tag;
-
-  // console.log("User ", user);
-  const routes = userRole ? roleRoutes[userRole] : [];
+  console.log(user,'user data that saved on context')
+  const routes = user ? filterRoutesByPermission(allRoutes, user) : [];
 
   if (!routes || routes.length === 0) {
     return (

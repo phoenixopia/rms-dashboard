@@ -1,3 +1,5 @@
+'use server'
+
 import {
   Permission,
   PermissionsApiResponse,
@@ -27,6 +29,32 @@ export const getAllPermissions = async (): Promise<Permission[]> => {
       Authorization: `Bearer ${authToken}`,
     },
   });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
+  }
+
+  const data: PermissionsApiResponse = await response.json();
+  return data.data.permissions;
+};
+
+export const getAllRestuarantPermissions = async (): Promise<Permission[]> => {
+  const url = `${BASEURL}/rbac/get-my-own?limit=1000`;
+
+  const authToken = await getAuthToken();
+
+  if (!authToken) {
+    throw new Error("Authentication token not found.");
+  }
+
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+ 
 
   if (!response.ok) {
     throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
@@ -68,6 +96,7 @@ export const getRoleById = async (roleId: string): Promise<RoleData> => {
     throw new Error("Authentication token not found.");
   }
 
+  
   const response = await fetch(url, {
     cache: "no-store",
     headers: {
@@ -84,7 +113,7 @@ export const getRoleById = async (roleId: string): Promise<RoleData> => {
   return data.data;
 };
 
-export const getAllRoles = async (): Promise<RoleData[]> => {
+export const getAllRoles = async () => {
   const url = `${BASEURL}/rbac/all-roles`;
 
   const authToken = await getAuthToken();
@@ -106,8 +135,67 @@ export const getAllRoles = async (): Promise<RoleData[]> => {
   }
 
   const data: RoleResponse = await response.json();
-  return data.data.roles;
+  return data;
 };
+
+export async function deleteRoles(data:any){
+  const url = `${BASEURL}/rbac/delete-role/${data}`;
+
+ 
+
+  try {
+    const authToken = await getAuthToken();
+       const response = await fetch(`${url}`, {
+      method: 'DELETE',
+      headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    },
+    });
+
+    if (!response.ok) {
+      return { success: false, message: "Failed to delete the role!" };
+    }
+    return { success: true, message: "Role deleted successfully!" };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err?.response?.data?.message || "Failed to delete role.",
+    };
+  }
+}
+
+
+
+
+
+export async function createRoleRestuarant(formData: any) {
+  const validatedFields = {
+    name: formData.name,
+    description: formData.description,
+    permissionIds: formData.permissionIds,
+  };
+  
+
+
+  try {
+    const authToken = await getAuthToken();
+
+    const response =await api.post("rbac/create-role", 
+      validatedFields, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+ 
+
+    return { success: true, message: "Role created successfully!" };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err?.response?.data?.message || "Failed to create role.",
+    };
+  }
+}
+
 
 export async function createRole(formData: RoleFormValues) {
   const validatedFields = createRoleFormSchema.safeParse({
@@ -116,7 +204,7 @@ export async function createRole(formData: RoleFormValues) {
     role_tag_id: formData.role_tag_id,
     permissionIds: formData.permissionIds,
   });
-
+    
   if (!validatedFields.success) {
     return {
       success: false,
@@ -142,29 +230,13 @@ export async function createRole(formData: RoleFormValues) {
 }
 
 export async function updateRole(formData: RoleFormValues, roleId: string) {
-  const validatedFields = createRoleFormSchema.safeParse({
-    name: formData.name,
-    description: formData.description,
-    role_tag_id: formData.role_tag_id,
-    permissionIds: formData.permissionIds,
-  });
 
-  if (!validatedFields.success) {
-    return {
-      success: false,
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Validation failed.",
-    };
-  }
 
-  console.log("Data validation", validatedFields.data);
-
-  console.log("Permissions", validatedFields.data.permissionIds);
 
   try {
     const authToken = await getAuthToken();
 
-    await api.put(`rbac/update-role/${roleId}`, validatedFields.data, {
+    await api.put(`rbac/update-role/${roleId}`, formData, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
 
