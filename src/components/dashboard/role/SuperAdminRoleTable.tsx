@@ -1,6 +1,5 @@
 "use client";
 
-import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import {
   Table,
   TableBody,
@@ -9,11 +8,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"; // Assuming shadcn-ui table is here
-import { Restaurant, RoleData, RoleResponse } from "@/types";
-import Image from "next/image";
+import { RoleData } from "@/types";
+
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
-import { Edit, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -108,9 +107,6 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Detail</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
                           <Link
                             href={`/dashboard/superadmin/role/new/${role.id}/edit`}
                           >
@@ -118,7 +114,7 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Delete</Link>
+                          <span>Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

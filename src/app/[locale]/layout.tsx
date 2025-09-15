@@ -32,6 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      {/* <body> */}
       <body className={poppins.className}>
         <NextIntlClientProvider>
           <ThemeProvider

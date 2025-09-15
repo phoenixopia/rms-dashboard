@@ -3,13 +3,15 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [
-      "graphicsfamily.com",
-      "img.freepik.com",
-      "encrypted-tbn0.gstatic.com",
-      "as2.ftcdn.net",
-      "images-platform.99static.com",
-      "dypdvfcjkqkg2.cloudfront.net",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**", // allows all hostnames
+      },
+      {
+        protocol: "http",
+        hostname: "**", // if you also want to allow non-HTTPS
+      },
     ],
   },
 };

@@ -58,7 +58,8 @@ export interface UserPermissions {
 export interface User {
   id: string;
   email?: string | null;
-  full_name: string;
+  first_name: string;
+  last_name: string;
   phone_number?: string | null;
   profile_picture?: string | null;
   is_active: boolean;

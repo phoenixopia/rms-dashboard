@@ -14,8 +14,6 @@ export const getAllRestaurantsWithSubscriptions = async (
 
   const authToken = await getAuthToken();
 
-  console.log(authToken, "Rest Auth token");
-
   if (!authToken) {
     throw new Error("Authentication token not found.");
   }
@@ -29,7 +27,7 @@ export const getAllRestaurantsWithSubscriptions = async (
       Authorization: `Bearer ${authToken}`,
     },
   });
-  console.log(response, "***Rest");
+
   if (!response.ok) {
     throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
   }

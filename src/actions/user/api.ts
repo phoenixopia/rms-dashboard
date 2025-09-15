@@ -1,3 +1,5 @@
+"use server";
+
 import { BackendAdminResponse, UsersResponse } from "@/types";
 import api, { BASEURL } from "../api";
 import { getAuthToken } from "@/auth/auth";
