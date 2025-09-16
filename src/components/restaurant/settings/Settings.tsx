@@ -2,6 +2,7 @@
 
 import { useState, useEffect,useRef } from "react";
 import { toast } from "sonner";
+import { useRouter } from "@/i18n/navigation";
 import { 
   updateBasicInfo, 
   uploadLogoImage,
@@ -19,6 +20,7 @@ import {
   createOrUpdateChargeSettings,
   deleteChargeSettings,
   BankName,
+  getBasicInfoSettings,
 } from "@/actions/restaurant-settings/api";
 import { Button } from "@/components/ui/button";
 import Language from "./Language";
@@ -114,15 +116,8 @@ const [logoFile, setLogoFile] = useState<File | null>(null);
 const [restaurantImageFile, setRestaurantImageFile] = useState<File | null>(null);
   const [editingContact, setEditingContact] = useState<ContactInfo | null>(null);
   const [editingBankAccount, setEditingBankAccount] = useState<BankAccount | null>(null);
-
-  const [basicInfo, setBasicInfo] = useState({
-    restaurant_name: restaurant.restaurant_name,
-    primary_color: restaurant.primary_color || "#000000",
-    language: restaurant.language || "en",
-    rtl_enabled: restaurant.rtl_enabled || false,
-    font_family: restaurant.font_family || "Roboto, sans-serif",
-    sms_enabled: restaurant.sms_enabled || false
-  });
+  const router = useRouter();
+  const [basicInfo, setBasicInfo] = useState<any>({});
 
   type ModuleType = "restaurant" | "branch";
 
@@ -177,15 +172,24 @@ const [restaurantImageFile, setRestaurantImageFile] = useState<File | null>(null
   const loadData = async () => {
     try {
       setLoading(true);
-      const [contactRes, bankRes, chargeRes] = await Promise.all([
+      const [basicInfo,contactRes, bankRes, chargeRes] = await Promise.all([
+        getBasicInfoSettings(),
         getAllContactInfo({ module_type: "restaurant" }),
         getAllBankAccounts(),
         getChargeSettings()
       ]);
 
-      setContactInfo(contactRes.data?.data || []);
-      setBankAccounts(bankRes.data || []);
-      
+      console.log(basicInfo,'Basic info res from load data')
+
+   setBasicInfo({
+        restaurant_name: basicInfo.data.restaurant_name || restaurant.restaurant_name,
+        primary_color: basicInfo.data.primary_color || "#000000",
+        sms_enabled: basicInfo?.data?.SystemSetting?.sms_enabled ,
+      });
+
+      setContactInfo(contactRes?.data?.data || []);
+      setBankAccounts(bankRes?.data?.rows || []);
+        console.log(chargeRes,'charge res from load data')
       if (chargeRes.data) {
         setChargeSettings(chargeRes.data);
         setChargeForm(chargeRes.data);
@@ -223,6 +227,7 @@ const [restaurantImageFile, setRestaurantImageFile] = useState<File | null>(null
     try {
       setLoading(true);
       await updateBasicInfo(restaurant.id, basicInfo);
+      router.refresh();
       toast.success("Basic information updated successfully");
     } catch (error) {
       toast.error("Failed to update basic information");
@@ -469,6 +474,7 @@ const handleUploadImages = async () => {
     );
   }
 
+  console.log(basicInfo,'basic info state value')
   return (
     <div className="container mx-auto p-4">
 
@@ -507,22 +513,24 @@ const handleUploadImages = async () => {
                 <label className="block text-sm font-medium mb-2">Restaurant Name</label>
                 <input
                   type="text"
-                  value={basicInfo.restaurant_name}
+                  value={basicInfo?.restaurant_name || ""}
                   onChange={(e) => setBasicInfo({ ...basicInfo, restaurant_name: e.target.value })}
                   className="w-full p-2 border rounded-md"
                   required
                 />
               </div>
               
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={basicInfo.sms_enabled}
-                  onChange={(e) => setBasicInfo({ ...basicInfo, sms_enabled: e.target.checked })}
-                  className="rounded"
-                />
-                <label className="text-sm font-medium">SMS Enabled</label>
-              </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={basicInfo?.sms_enabled} 
+                onChange={(e) => setBasicInfo({ ...basicInfo, sms_enabled: e.target.checked })}
+                className="rounded"
+              />
+              <label className="text-sm font-medium">SMS Enabled</label>
+            </div>
+            
+
               
               <Button
                 type="submit"
@@ -690,9 +698,9 @@ const handleUploadImages = async () => {
           </form>
 
          
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className=" rounded-lg shadow overflow-hidden">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Module</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
@@ -901,9 +909,9 @@ const handleUploadImages = async () => {
           </form>
 
        
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className=" rounded-lg shadow overflow-hidden">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bank</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Account Number</th>

@@ -91,9 +91,9 @@ useEffect(() => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Create Support Ticket</h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 py-8 px-4">
+      <div className="max-w-2xl mx-auto text-black dark:text-white bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 dark:text-gray-800">Create Support Ticket</h1>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
          
@@ -121,7 +121,7 @@ useEffect(() => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-white">Title *</label>
               <input
                 {...register("title")}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -131,7 +131,7 @@ useEffect(() => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1  dark:text-white">Description *</label>
               <textarea
                 {...register("description")}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

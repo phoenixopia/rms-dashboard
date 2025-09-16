@@ -172,7 +172,7 @@ export default function RestaurantSupportTicketTable({ data }: any) {
     </Button> */}
 
     <Link href="/dashboard/restaurant/support-ticket/new">
-      <Button className="h-11 px-6 font-semibold rounded-lg bg-primary text-white shadow-md hover:bg-primary/90 transition-colors">
+      <Button className="h-11 px-6 font-semibold rounded-lg bg-primary shadow-md hover:bg-primary/90 transition-colors">
         + Create Support Ticket
       </Button>
     </Link>

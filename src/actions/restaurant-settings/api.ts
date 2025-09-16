@@ -6,15 +6,15 @@ import { getAuthToken } from "@/auth/auth";
 export const updateBasicInfo = async (id: string, data:any) => {
   const authToken = await getAuthToken();
     console.log(data,'data to update basic settings')
-  const response = await fetch(`${BASEURL}/update-basic-info/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/update-basic-info`, {
     method: "PUT",
     headers: {
+      "Authorization": `Bearer ${authToken}`,
       "Content-Type": "application/json",
-      Authorization: `Bearer ${authToken}`,
     },
     body: JSON.stringify(data),
   });
-
+  console.log(response,'response from update basic info')
   if (!response.ok) {
     throw new Error("Failed to update basic information");
   }
@@ -25,7 +25,7 @@ export const updateBasicInfo = async (id: string, data:any) => {
 export const uploadLogoImage = async (formData: FormData) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/upload-logo-image`, {
+  const response = await fetch(`${BASEURL}/restaurant/upload-logo-image`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -50,7 +50,7 @@ export const addContactInfo = async (data: {
 }) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/add-contact-info`, {
+  const response = await fetch(`${BASEURL}/restaurant/add-contact-info`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export const addContactInfo = async (data: {
     },
     body: JSON.stringify(data),
   });
-
+  console.log(response,'response from add contact info')
   if (!response.ok) {
     throw new Error("Failed to add contact info");
   }
@@ -80,9 +80,13 @@ export const getAllContactInfo = async (params?: {
   if (params?.page) queryParams.append("page", params.page.toString());
   if (params?.limit) queryParams.append("limit", params.limit.toString());
 
-  const url = `${BASEURL}/contact-info?${queryParams.toString()}`;
+  // const url = `${BASEURL}/restaurant/contact-info?${queryParams.toString()}`;
+  
+  const url = `${BASEURL}/restaurant/contact-info`;
+
   
   const response = await fetch(url, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -98,7 +102,7 @@ export const getAllContactInfo = async (params?: {
 export const getContactInfoById = async (id: string) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/get-byId/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/get-byId/${id}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -118,7 +122,7 @@ export const updateContactInfo = async (id: string, data: {
 }) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/update-contact-info/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/update-contact-info/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -137,7 +141,7 @@ export const updateContactInfo = async (id: string, data: {
 export const setPrimaryContact = async (id: string) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/set-primary-contact/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/set-primary-contact/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -154,7 +158,7 @@ export const setPrimaryContact = async (id: string) => {
 export const deleteContactInfo = async (id: string) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/delete-contact-info/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/delete-contact-info/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -202,7 +206,7 @@ export const createBankAccount = async (data: {
 }) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/create-bank-account`, {
+  const response = await fetch(`${BASEURL}/restaurant/create-bank-account`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -221,7 +225,7 @@ export const createBankAccount = async (data: {
 export const updateBankAccount = async (id: string, data:any) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/update-bank-account/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/update-bank-account/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -240,7 +244,7 @@ export const updateBankAccount = async (id: string, data:any) => {
 export const getAllBankAccounts = async () => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/get-bank-info`, {
+  const response = await fetch(`${BASEURL}/restaurant/get-bank-info`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -256,7 +260,7 @@ export const getAllBankAccounts = async () => {
 export const getBankAccountById = async (id: string) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/get-bank-byId/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/get-bank-byId/${id}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -272,7 +276,7 @@ export const getBankAccountById = async (id: string) => {
 export const deleteBankAccount = async (id: string) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/delet-bank-account/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/delet-bank-account/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -289,7 +293,7 @@ export const deleteBankAccount = async (id: string) => {
 export const setDefaultBankAccount = async (id: string) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/set-default-bank-account/${id}`, {
+  const response = await fetch(`${BASEURL}/restaurant/set-default-bank-account/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -304,10 +308,26 @@ export const setDefaultBankAccount = async (id: string) => {
 };
 
 
+export const getBasicInfoSettings = async () => {
+  const authToken = await getAuthToken();
+  
+  const response = await fetch(`${BASEURL}/restaurant/get-my-restaurant`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch basic info settings");
+  }
+
+  return response.json();
+};
+
 export const getChargeSettings = async () => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/charge-settings`, {
+  const response = await fetch(`${BASEURL}/restaurant/charge-settings`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -340,7 +360,7 @@ export const createOrUpdateChargeSettings = async (data: {
 }) => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/create-update-charge-setting`, {
+  const response = await fetch(`${BASEURL}/restaurant/create-update-charge-setting`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -359,7 +379,7 @@ export const createOrUpdateChargeSettings = async (data: {
 export const deleteChargeSettings = async () => {
   const authToken = await getAuthToken();
   
-  const response = await fetch(`${BASEURL}/delete-charge-settings`, {
+  const response = await fetch(`${BASEURL}/restaurant/delete-charge-settings`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${authToken}`,
