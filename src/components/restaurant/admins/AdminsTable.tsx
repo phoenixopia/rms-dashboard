@@ -1,6 +1,7 @@
 "use client"; 
 import { useEffect,useState,useMemo } from "react";
 import { RoleData } from "@/types";
+import { useTranslations } from "next-intl";
 import { getAllRoles } from "@/actions/role/api";
 import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import { toast } from "sonner";
@@ -44,9 +45,9 @@ export default function AdminsTable({ users }: any) {
    const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
    const router =useRouter()
   const [localRestaurants, setLocalRestaurants] = useState(users ?? []);
- const [roles, setRoles] = useState<RoleData[]>([]);
+ const [roles, setRoles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const t = useTranslations("full");
 
   const fuse = useMemo(() => {
     return new Fuse(localRestaurants, {
@@ -68,7 +69,7 @@ export default function AdminsTable({ users }: any) {
     async function fetchRoles() {
       try {
         const roleData: any = await getAllRoles();
-        setRoles(roleData);
+        setRoles(roleData?.data?.roles || []);
       } catch (err) {
         console.error("Error fetching permissions:", err);
         toast.error("Faild to fetch permissions");
@@ -96,7 +97,7 @@ export default function AdminsTable({ users }: any) {
         <div className="w-full">
           <Link href="/dashboard/restaurant/staff/new">
             <Button variant="outline" className="h-12 cursor-pointer font-bold">
-              Create
+              {t("Create")}
             </Button>
           </Link>
         </div>
@@ -108,15 +109,15 @@ export default function AdminsTable({ users }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>No.</TableHead>
-                <TableHead>Profile</TableHead>
-                <TableHead>Full Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Permission Count</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead>{t("number")}.</TableHead>
+                <TableHead>{t("Profile")}</TableHead>
+                <TableHead>{t("Full Name")}</TableHead>
+                <TableHead>{t("Email")}</TableHead>
+                <TableHead>{t("Phone")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Role")}</TableHead>
+                <TableHead>{t("Permission Count")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -163,7 +164,7 @@ export default function AdminsTable({ users }: any) {
                           {/* <DropdownMenuItem className="cursor-pointer">
                             <Link href="#">Detail</Link>
                           </DropdownMenuItem> */}
-                              <DropdownMenuItem className="cursor-pointer" onClick={() => handleEditClick(user)}>
+                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleEditClick(user)}>
                           Edit
                         </DropdownMenuItem>
                           <DropdownMenuItem className="cursor-pointer" 

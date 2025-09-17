@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect,useRef, use } from "react";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { 
   updateBasicInfo, 
   uploadLogoImage,
@@ -104,6 +105,7 @@ const BANK_NAMES = [
 ] as const;
 
 export default function Settings({ restaurant, branches }: { restaurant: any; branches: Branch[] }) {
+  const t =useTranslations('full');
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(false);
   const [contactInfo, setContactInfo] = useState<ContactInfo[]>([]);
@@ -489,11 +491,11 @@ const handleUploadImages = async () => {
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            {tab === "basic" && "Basic Info"}
-            {tab === "contact" && "Contact Info"}
-            {tab === "bank" && "Bank Accounts"}
-            {tab === "charges" && "Charge Settings"}
-            {tab === "system" && "System Settings"}
+            {tab === "basic" &&  `${t("Basic Info")}`}
+            {tab === "contact" && `${t("Contact Info")}`}
+            {tab === "bank" && `${t("Bank Accounts")}`}
+            {tab === "charges" && `${t("Charge Settings")}`}
+            {tab === "system" && `${t("System Settings")}`}
 
           </button>
         ))}

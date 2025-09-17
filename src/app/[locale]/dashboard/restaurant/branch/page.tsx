@@ -41,13 +41,13 @@ export default async function SuperAdminRolePage() {
       {/* <SuperAdminRoleTable roles={data} /> */}
       
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <Pagination
           currentPage={data?.meta?.currentPage}
           totalPages={data?.meta?.totalPages}
           limit={data?.meta?.pageSize}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

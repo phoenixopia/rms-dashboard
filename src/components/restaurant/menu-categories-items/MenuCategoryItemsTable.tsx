@@ -23,7 +23,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; // Assuming shadcn-ui table is here
+} from "@/components/ui/table";
 import { User } from "@/types";
 import { toast } from "sonner";
 import Fuse from "fuse.js";
@@ -32,6 +32,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -60,6 +61,7 @@ type MenuItemFormValues = z.infer<typeof schema>;
 export default function MenuCategoryItemsTable({ data }: any) {
       const fileInputRef = useRef<HTMLInputElement>(null);
       const route =useRouter();
+      const t=useTranslations('full');
   const [searchRes, setSearchRes] = useState("");
   const [detailMenuItem, setDetailMenuItem] = useState<any | null>(null);
 const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
@@ -160,7 +162,7 @@ useEffect(() => {
         <div className="w-full">
           <Link href="/dashboard/restaurant/menu-items/new">
             <Button variant="outline" className="h-12 cursor-pointer font-bold">
-              Create
+              {t("Create")}
             </Button>
           </Link>
         </div>
@@ -173,9 +175,10 @@ useEffect(() => {
             <TableHeader>
               <TableRow className="bg-muted">
                 <TableHead></TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Unit Price</TableHead>
-                <TableHead>MenuCategory</TableHead>
+                <TableHead>{t("Name")}</TableHead>
+                <TableHead>{t("Unit Price")}</TableHead>
+                <TableHead>{t("Menu Category")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

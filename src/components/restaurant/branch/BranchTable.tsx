@@ -55,7 +55,7 @@ export default function BranchTable(data: any) {
   const handleCloseModal = () => {
     setEditBranch(null);
   };
-   console.log(data?.data,'data of the branches')
+
   return (
     <>
       <div className="mb-6 flex w-full items-center justify-between gap-4">
@@ -183,6 +183,7 @@ export default function BranchTable(data: any) {
                         }}
                       >
                         Delete
+                        {t("Delete")}
                       </Button>
                     </div>
                   </div>

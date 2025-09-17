@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTranslations } from "next-intl";
+
 import {
   Select,
   SelectTrigger,
@@ -49,7 +51,7 @@ export default function MenuItemForm({ item, onSuccess }: { item?: any; onSucces
       menu_category_id: "",
     },
   });
-
+   const t = useTranslations("full");
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function MenuItemForm({ item, onSuccess }: { item?: any; onSucces
 
   const onSubmit = async (values: any) => {
     try {
-      const res = await createMenuItem(values); // or update
+      const res = await createMenuItem(values); 
       if (res.success) {
         toast.success("Menu item saved successfully");
         onSuccess();
@@ -88,18 +90,18 @@ export default function MenuItemForm({ item, onSuccess }: { item?: any; onSucces
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-xl mx-auto py-6">
       <div>
-        <label>Name</label>
+        <label>{t("Name")}</label>
         <Input {...register("name")} />
         {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
       </div>
 
       <div>
-        <label>Description</label>
+        <label>{t("Description")}</label>
         <Textarea {...register("description")} />
       </div>
 
       <div>
-        <label>Unit Price</label>
+        <label>{t("Unit Price")}</label>
         <Input type="number" step="0.01" {...register("unit_price", { valueAsNumber: true })} />
         {errors.unit_price && <p className="text-sm text-red-500">{errors.unit_price.message}</p>}
       </div>
@@ -133,7 +135,7 @@ export default function MenuItemForm({ item, onSuccess }: { item?: any; onSucces
           <SelectContent>
             {categories?.map((cat) => (
               <SelectItem key={cat.id} value={cat.id} className="flex flex-row gap-2 space-x-2">
-                <span>{cat.name} </span>,
+                <span>{cat.name} </span>
                 <span> {cat?.Branch?.name}</span>
                
               </SelectItem>
@@ -144,7 +146,7 @@ export default function MenuItemForm({ item, onSuccess }: { item?: any; onSucces
       </div>
 
       <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Saving..." : item ? "Update Item" : "Create Item"}
+        {isSubmitting ? "Saving..." : item ? "Update Item" :`${t("Create Menu Item Food")}` }
       </Button>
     </form>
   );

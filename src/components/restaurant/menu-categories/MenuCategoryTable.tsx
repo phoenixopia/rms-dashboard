@@ -1,5 +1,5 @@
 "use client"; // This is a Client Component
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import {
   Table,
@@ -8,7 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; // Assuming shadcn-ui table is here
+} from "@/components/ui/table"; 
+import { useTranslations } from "next-intl";
+
 import { User } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -42,6 +44,7 @@ import {
 } from "@/components/ui/select";
 import { deleteMenuCategory, deleteMenuItem, getAllMenu, getAllMenuTags, updateMenuCategory, updateMenuItem } from "@/actions/menu/api";
 import { getAllBranches } from "@/actions/branch/api";
+
 interface AdminTableProps {
   data: User[];
 }
@@ -62,6 +65,7 @@ export default function MenuCategoryTable({ data }: any) {
   const [menu, setMenu] = useState<{ id: string; name: string } | null>(null);
 const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
    const router =useRouter()
+    const t=useTranslations('full');
   const [localRestaurants, setLocalRestaurants] = useState(data ?? []);
     const [detailMenuItem, setDetailMenuItem] = useState<any | null>(null);
    const [isLoading,setIsLoading]=useState(false)
@@ -160,7 +164,8 @@ const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
           toast.error(e.message || "Unexpected error");
         }
       };
-  console.log(tagIds,'tag lists')
+      
+
   return (
     <>
       <div className="mb-6 flex w-full items-center justify-between gap-4">
@@ -168,7 +173,7 @@ const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
         <div className="w-full">
           <Link href="/dashboard/restaurant/menu-categories/new">
             <Button variant="outline" className="h-12 cursor-pointer font-bold">
-              Create
+                {t("Create")}
             </Button>
           </Link>
         </div>
@@ -180,11 +185,11 @@ const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Name</TableHead>
-                <TableHead>Menu items count</TableHead>
-                <TableHead>Branch Name</TableHead>
-                <TableHead>Status</TableHead>
-
+                <TableHead>{t("Name")}</TableHead>
+                <TableHead>{t("Menu items count")}</TableHead>
+                <TableHead>{t("Branch Name")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

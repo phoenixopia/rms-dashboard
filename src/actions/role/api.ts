@@ -114,7 +114,7 @@ export const getRoleById = async (roleId: string): Promise<RoleData> => {
 };
 
 export const getAllRoles = async () => {
-  const url = `${BASEURL}/rbac/all-roles`;
+  const url = `${BASEURL}/rbac/all-roles?page=10000`;
 
   const authToken = await getAuthToken();
 
@@ -129,7 +129,7 @@ export const getAllRoles = async () => {
       Authorization: `Bearer ${authToken}`,
     },
   });
-
+  
   if (!response.ok) {
     throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
   }

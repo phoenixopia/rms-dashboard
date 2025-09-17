@@ -1,5 +1,5 @@
 "use client"; 
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import { useRouter } from "@/i18n/navigation";
 import {
@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import { useTranslations } from "next-intl";
 import { User } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -63,6 +63,7 @@ type CateringFormValues = z.infer<typeof schema>;
 
 export default function RestaurantTablesTable({ data }: any) {
   const [searchRes, setSearchRes] = useState("");
+  const t =useTranslations("full");
   const [branches, setBranches] = useState<any[]>([]);
   const [addFilter,setAddFilter]=useState(false);
   const [menu, setMenu] = useState<{ id: string; name: string } | null>(null);
@@ -171,7 +172,7 @@ export default function RestaurantTablesTable({ data }: any) {
 
     <Link href="/dashboard/restaurant/tables/new">
       <Button className="h-11 px-6 font-semibold rounded-lg bg-primary text-white shadow-md hover:bg-primary/90 transition-colors">
-        + Create Table
+        + {t("Create Table")}
       </Button>
     </Link>
   </div>

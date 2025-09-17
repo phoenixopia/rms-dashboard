@@ -5,6 +5,7 @@ import { useActionState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import { useTranslations } from "next-intl";
 
 import {
   createRestaurantAdminSchema,
@@ -32,7 +33,7 @@ interface adminFormProps {
 export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
   const [pending, startTransition] = useTransition();
   const [state, formAction] = useActionState(createRestaurantStaffAction, null);
-
+  const t = useTranslations("full");
   const {
     register,
     handleSubmit,
@@ -109,7 +110,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
 
       {staffData?
          <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-        <Label htmlFor="role_id">Role</Label>
+        <Label htmlFor="role_id">{t("Role")}</Label>
         {/* <label className="block font-medium">Role Tag</label> */}
         <Select
       
@@ -124,7 +125,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">None</SelectItem>
-            {roles.map((role:any) => (
+            {roles?.map((role:any) => (
               <SelectItem key={role.id} value={role.id}>
                 {role.name}
               </SelectItem>
@@ -137,17 +138,17 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
       </div>:<div className="flex w-full flex-col items-center justify-center gap-4">
       <div className="flex w-4/6 justify-between gap-2 lg:w-3/6">
          
-        <p className="text-lg font-bold lg:text-2xl">Create Restaurant Staff</p>
+        <p className="text-lg font-bold lg:text-2xl">{t("Create Restaurant Staff")}</p>
         
 
         <Link href="/dashboard/superadmin/admins">    <Button variant="outline" className="cursor-pointer">
-            Cancel
+            {t("Cancel")}
           </Button>
         </Link>
        
       </div>
       <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-        <Label htmlFor="first_name">First Name</Label>
+        <Label htmlFor="first_name">{t("First Name")}</Label>
         <Input {...register("first_name")} />
         {errors.first_name && (
           <p className="text-sm text-red-500">{errors.first_name.message}</p>
@@ -155,7 +156,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
       </div>
 
       <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-        <Label htmlFor="last_name">Last Name</Label>
+        <Label htmlFor="last_name">{t("Last Name")}</Label>
         <Input {...register("last_name")} />
         {errors.last_name && (
           <p className="text-sm text-red-500">{errors.last_name.message}</p>
@@ -163,7 +164,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
       </div>
 
       <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">{t("Password")}</Label>
         <Input type="password" {...register("password")} />
         {errors.password && (
           <p className="text-sm text-red-500">{errors.password.message}</p>
@@ -171,7 +172,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
       </div>
 
       <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-        <Label htmlFor="creatorMode">Creation Mode</Label>
+        <Label htmlFor="creatorMode">{t("Creation Mode")}</Label>
         <Select
           value={creatorMode}
           onValueChange={(val) =>
@@ -182,15 +183,15 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
             <SelectValue placeholder="Select mode" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="email">Email</SelectItem>
-            <SelectItem value="phone">Phone</SelectItem>
+            <SelectItem value="email">{t("Email")}</SelectItem>
+            <SelectItem value="phone">{t("Phone")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {creatorMode === "email" && (
         <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t("Email")}</Label>
           <Input {...register("email")} />
           {errors.email && (
             <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -200,7 +201,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
 
       {creatorMode === "phone" && (
         <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-          <Label htmlFor="phone_number">Phone Number</Label>
+          <Label htmlFor="phone_number">{t("Phone Number")}</Label>
           <Input {...register("phone_number")} />
           {errors.phone_number && (
             <p className="text-sm text-red-500">
@@ -212,7 +213,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
 
 
       <div className="flex w-4/6 flex-col gap-2 lg:w-3/6">
-        <Label htmlFor="role_id">Role</Label>
+        <Label htmlFor="role_id">{t("Role")}</Label>
         {/* <label className="block font-medium">Role Tag</label> */}
         <Select
       
@@ -252,8 +253,7 @@ export function CreateRestaurantStaffForm({ roles,staffData,onSuccess }: any) {
       </div> */}
       </div>}
       <Button type="submit" disabled={pending}>
-        {staffData?pending ? "updating..." : "Update Staff":pending ? "Creating..." : "Create Staff"}
-        {}
+        {staffData?pending ? "updating..." : "Update Staff":pending ? "Creating..." : ` ${t('Create Staff')}`}
       </Button>
     </form> 
   </div>

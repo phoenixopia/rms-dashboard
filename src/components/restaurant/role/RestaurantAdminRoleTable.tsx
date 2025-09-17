@@ -132,7 +132,7 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
         <div className="w-full">
           <Link href="/dashboard/restaurant/role/new">
             <Button variant="outline" className="h-12 cursor-pointer font-bold">
-              Create
+              {t("Create")}
             </Button>
           </Link>
         </div>
@@ -142,14 +142,14 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
           <TableHeader>
             <TableRow className="bg-muted">
               <TableHead>{t("number")}.</TableHead>
-              <TableHead>Role Name</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Role Tag</TableHead>
-              <TableHead>Restaurant Name</TableHead>
-              <TableHead>Permission Count</TableHead>
+              <TableHead>{t("Role Name")}</TableHead>
+              <TableHead>{t("Description")}</TableHead>
+              <TableHead>{t("Role Tag")}</TableHead>
+              <TableHead>{t("Restaurant Name")}</TableHead>
+              <TableHead>{t("Permission Count")}</TableHead>
               {/* <TableHead>Created At</TableHead>
               <TableHead>Updated At</TableHead> */}
-              <TableHead>Action</TableHead>
+              <TableHead>{t("Action")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

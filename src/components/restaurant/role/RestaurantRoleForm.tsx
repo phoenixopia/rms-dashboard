@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
+import { useTranslations } from "next-intl";
 
 import {
   Select,
@@ -14,7 +15,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "@/i18n/navigation";
-
 import { Permission, RoleData, RoleTag } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
  const createRoleFormSchema = z.object({
@@ -44,7 +44,7 @@ export default function RestaurantRoleForm({
 
   // const dRoleTagId =
   //   allRoleTags.find((r) => r.name === role?.role_tag_name)?.id || "";
-
+   const t=useTranslations('full');
   const {
     register,
     handleSubmit,
@@ -104,11 +104,11 @@ export default function RestaurantRoleForm({
     >
       <div className="flex w-5/6 justify-between gap-2">
         <p className="text-lg font-bold lg:text-2xl">
-          {isUpdateMode ? "Update Role" : "Create New Role"}
+          {isUpdateMode ? "Update Role" : `${t("Create New Role")}`}
         </p>
         {role?'':<Link href="/dashboard/superadmin/role">
           <Button variant="outline" className="cursor-pointer">
-            Cancel
+            {t("Cancel")}
           </Button>
         </Link>}
         
@@ -116,7 +116,7 @@ export default function RestaurantRoleForm({
 
       {/* Name Field */}
       <div className="flex w-5/6 flex-col gap-2">
-        <label className="block font-medium">Role Name</label>
+        <label className="block font-medium">{t("Role Name")}</label>
         <Input placeholder="e.g., restaurant_admin" {...register("name")} />
         {errors.name && (
           <p className="text-sm text-red-500">{errors.name.message}</p>
@@ -125,7 +125,7 @@ export default function RestaurantRoleForm({
 
       {/* Description Field */}
       <div className="flex w-4/6 flex-col gap-2 lg:w-5/6">
-        <label className="block font-medium">Description</label>
+        <label className="block font-medium">{t("Description")}</label>
         <Textarea
           placeholder="A brief description of the role's purpose."
           {...register("description")}
@@ -162,7 +162,7 @@ export default function RestaurantRoleForm({
 
       {/* Permissions */}
       <div className="flex w-5/6 flex-col gap-2">
-        <label className="mb-2 block font-medium">Permissions</label>
+        <label className="mb-2 block font-medium">{t("Permissions")}</label>
         <p className="text-muted-foreground mb-4 text-sm">
           Select the permissions this role will have.
         </p>

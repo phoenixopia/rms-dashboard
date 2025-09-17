@@ -15,7 +15,7 @@ import { User } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import { SearchIcon } from "lucide-react";
@@ -73,7 +73,7 @@ export default function RestaurantSupportTicketTable({ data }: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [menuTagsList, setMenuTagsList] = useState<any[]>([]);
   const [editMenuItem, setEditMenuItem] = useState<any | null>(null);
-
+  const t = useTranslations("full");
   const {
     register,
     handleSubmit,
@@ -173,7 +173,7 @@ export default function RestaurantSupportTicketTable({ data }: any) {
 
     <Link href="/dashboard/restaurant/support-ticket/new">
       <Button className="h-11 px-6 font-semibold rounded-lg bg-primary shadow-md hover:bg-primary/90 transition-colors">
-        + Create Support Ticket
+        + Create Support Ticket 
       </Button>
     </Link>
   </div>
@@ -193,11 +193,11 @@ export default function RestaurantSupportTicketTable({ data }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>User</TableHead>
-                <TableHead>Priority</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead>{t("User")}</TableHead>
+                <TableHead>{t("Priority")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Title")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
 
   
               </TableRow>
