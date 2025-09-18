@@ -90,7 +90,7 @@ export default function OrdersTable({ orders }: any) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {orders.map((order:any, index:number) => {
+              {filterdRestaurants.map((order:any, index:number) => {
                 return (
                   <TableRow
                     key={order.order_id}
