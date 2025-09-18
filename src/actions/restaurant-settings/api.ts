@@ -5,7 +5,7 @@ import { getAuthToken } from "@/auth/auth";
 
 export const updateBasicInfo = async (id: string, data:any) => {
   const authToken = await getAuthToken();
-    console.log(data,'data to update basic settings')
+    
   const response = await fetch(`${BASEURL}/restaurant/update-basic-info`, {
     method: "PUT",
     headers: {
@@ -14,7 +14,7 @@ export const updateBasicInfo = async (id: string, data:any) => {
     },
     body: JSON.stringify(data),
   });
-  console.log(response,'response from update basic info')
+
   if (!response.ok) {
     throw new Error("Failed to update basic information");
   }
@@ -58,7 +58,7 @@ export const addContactInfo = async (data: {
     },
     body: JSON.stringify(data),
   });
-  console.log(response,'response from add contact info')
+
   if (!response.ok) {
     throw new Error("Failed to add contact info");
   }

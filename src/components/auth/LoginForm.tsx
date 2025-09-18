@@ -69,7 +69,7 @@ export default function LoginForm() {
   useEffect(() => {
     if (user !== null) {
       setAuthChecked(true);
-       console.log(user,'user data in the login page')
+    
       if (!isAuthenticated) {
         router.push("/login");
       } else if (user?.requiresPasswordChange) {

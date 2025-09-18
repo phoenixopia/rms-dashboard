@@ -167,11 +167,11 @@ export default function RestaurantTablesTable({ data }: any) {
       onClick={() => setAddFilter(!addFilter)}
       className="h-11 px-5 font-medium rounded-lg shadow-sm hover:bg-accent transition-colors"
     >
-      {addFilter ? "Close Filters" : "Add Filters"}
+      {addFilter ? `${t('Close Filters')}` : `${t("Add Filters")}`}
     </Button>
 
     <Link href="/dashboard/restaurant/tables/new">
-      <Button className="h-11 px-6 font-semibold rounded-lg bg-primary text-white shadow-md hover:bg-primary/90 transition-colors">
+      <Button className="h-11 px-6 font-semibold rounded-lg bg-primary dark:bg-gray-800 text-white shadow-md hover:bg-primary/90 transition-colors">
         + {t("Create Table")}
       </Button>
     </Link>
@@ -192,11 +192,11 @@ export default function RestaurantTablesTable({ data }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Table Number</TableHead>
-                <TableHead>Branch Name</TableHead>
-                <TableHead>Capacity</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t("Table Number")}</TableHead>
+                <TableHead>{t("Branch Name")}</TableHead>
+                <TableHead>{t("Capacity")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

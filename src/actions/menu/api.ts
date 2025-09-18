@@ -65,7 +65,7 @@ export async function updateMenu(id: string, data: any) {
       },
       body: JSON.stringify(data),
     });
-   console.log(response,'response after edit the menu')
+   
     const result = await response.json();
     return result;
   } catch (error) {

@@ -36,7 +36,7 @@ export default async function AcitvityLogs({
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
    
-  console.log(data?.data?.data,'activity logs data')
+
 
   return (
     <div className="container mx-auto py-5">

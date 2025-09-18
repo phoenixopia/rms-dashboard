@@ -52,7 +52,7 @@ const handleVideoUpload = async () => {
   }
 
   const formData = new FormData();
-  console.log(branchId,'branchId')
+  
   formData.append("branch_id", branchId);
   formData.append("title", title);
   formData.append("description", description);
@@ -61,8 +61,7 @@ const handleVideoUpload = async () => {
 
   try {
     setIsSubmitting(true);
-    console.log("create social media");
-     console.log(formData,'form data')
+
         let response;
 
       if (updatedData?.id) {

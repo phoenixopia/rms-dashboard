@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { deleteMenu } from "@/actions/menu/api";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   Table,
   TableBody,
@@ -34,7 +35,7 @@ interface MenuTableProps {
 }
 
 export default function MenuTable({ data }: MenuTableProps) {
-
+  const t = useTranslations("full");
   const router =useRouter()
   const [confirmDelete, setConfirmDelete] = useState<{ id: string, name: string } | null>(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -97,10 +98,10 @@ export default function MenuTable({ data }: MenuTableProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted">
-              <TableHead>Name</TableHead>
-              <TableHead>Total categories</TableHead>
-              <TableHead>Total items</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead>{t("Name")}</TableHead>
+              <TableHead>{t("Total categories")}</TableHead>
+              <TableHead>{t("Total items")}</TableHead>
+              <TableHead>{t("Action")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -140,7 +141,7 @@ export default function MenuTable({ data }: MenuTableProps) {
     
         {confirmDelete && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-            <div className="bg-white p-6 rounded shadow-lg w-80">
+            <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-lg w-80">
               <h2 className="text-lg font-bold mb-4">Confirm Delete</h2>
               <p className="mb-4">Are you sure you want to delete "{confirmDelete.name}"?</p>
               <p className="mb-4 text-sm text-red-600">This action cannot be undone.</p>
@@ -165,7 +166,7 @@ export default function MenuTable({ data }: MenuTableProps) {
         {/* Update Menu Modal */}
         {showUpdateModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-            <div className="bg-white p-6 rounded shadow-lg w-96 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-96 max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-bold">Update Menu</h2>
                 <Button

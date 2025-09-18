@@ -47,7 +47,6 @@ export default function DashboardLayout({
     );
   }
 
-  console.log(user,'user data that saved on context')
   const routes = user ? filterRoutesByPermission(allRoutes, user) : [];
 
   if (!routes || routes.length === 0) {

@@ -24,7 +24,7 @@ export default async function AdminsPages({ searchParams }: AdminsPageProps) {
     console.error("Error fetching admins data:", err);
     error = "Failed to load users. Please try again later.";
   }
-  console.log(data, "Data from getAllCreatedUsers");
+  
   const totalPages = data ? Math.ceil(data.data.total / data.data.pages) : 1;
 
   if (error) {
@@ -32,7 +32,6 @@ export default async function AdminsPages({ searchParams }: AdminsPageProps) {
   }
 
 
-  console.log(data,'staff data')
   return (
     <div className="container mx-auto py-5">
       <h1 className="mb-4 text-2xl font-bold">Staffs</h1>

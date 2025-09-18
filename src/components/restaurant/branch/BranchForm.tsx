@@ -136,7 +136,7 @@ export default function BranchForm({
   }, []);
 
   const onSubmit = async (values: any) => {
-      console.log(values, 'values to create new branch')
+      
         if (values.manager_id === 'none') {
       delete values.manager_id;
     }
@@ -156,7 +156,7 @@ export default function BranchForm({
         };
 
        let response=   await updateBranch(payload,branch.id);
-         console.log(payload,'update branch payload')
+        
           if(response?.success){
             toast.success("Branch Updated");
             router.refresh();
@@ -178,8 +178,7 @@ export default function BranchForm({
       toast.error(error.message || "Form submission failed");
     }
   };
-  console.log(staffIds,'staff ids')
- console.log(staffList,'staffLists')
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

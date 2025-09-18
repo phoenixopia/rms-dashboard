@@ -42,7 +42,7 @@ export default async function SuperAdminRolePage() {
       </div>
     );
   }
-  console.log(data,'roles data from server')
+
   return (
     <div className="container mx-auto py-5">
       <h1 className="mb-4 text-2xl font-bold">Roles</h1>

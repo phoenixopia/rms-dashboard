@@ -46,7 +46,7 @@ export async function createSocialMedia(data: any) {
     const response = await api.post("/social-media/upload-video",data, {
       headers: { "Authorization": `Bearer ${authToken}` },
     });
-   console.log(response,'response after social media create successfuly')
+
 
     return { success: true, message: "Social media post created successfully!" };
   } catch (err: any) {
@@ -83,15 +83,14 @@ export const deleteSocialPosts = async (id: string) => {
 
 
 export async function updateSocialMedia(data: any,id:any) {
-  console.log(id,'id to be updated')
+
   try {
     const authToken = await getAuthToken();
     
     const response = await api.post(`/social-media/update-video/${id}`,data, {
       headers: { "Authorization": `Bearer ${authToken}` },
     });
-   console.log(response,'response after social media create successfuly')
-
+   
     return { success: true, message: "Social media post created successfully!" };
   } catch (err: any) {
     return {

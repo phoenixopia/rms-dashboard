@@ -1,5 +1,5 @@
 "use client"; 
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import { useRouter } from "@/i18n/navigation";
 import {
@@ -14,7 +14,7 @@ import { User } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import { SearchIcon } from "lucide-react";
@@ -97,7 +97,7 @@ export default function ActivityLogsTable({ data }: any) {
   const [menuTagsList, setMenuTagsList] = useState<any[]>([]);
   const [editMenuItem, setEditMenuItem] = useState<any | null>(null);
   const [addFilter,setAddFilter]=useState(false);
-
+  const t = useTranslations("full");
 useEffect(() => {
     const fetchData = async () => {
       try {
@@ -119,7 +119,7 @@ useEffect(() => {
     fetchData();
   }, []);
 
-  console.log(data,' from activity logs')
+
   return (
     <>
       <div className="mb-6 flex w-full items-center justify-between gap-4">
@@ -146,10 +146,10 @@ useEffect(() => {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>User Name</TableHead>
-                <TableHead>User Email</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead>Created At</TableHead>
+                <TableHead>{t("User Name")}</TableHead>
+                <TableHead>{t("User Email")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
+                <TableHead>{t("Created At")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

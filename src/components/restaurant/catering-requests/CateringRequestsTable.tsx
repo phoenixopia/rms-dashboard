@@ -33,6 +33,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { BASEURL } from "@/actions/api";
+import { useTranslations } from "next-intl";
 
 import {
   Select,
@@ -67,7 +68,7 @@ export default function CateringRequestsTable({ data }: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [menuTagsList, setMenuTagsList] = useState<any[]>([]);
   const [editMenuItem, setEditMenuItem] = useState<any | null>(null);
-
+  const t =useTranslations("full");
   const {
     register,
     handleSubmit,
@@ -136,7 +137,7 @@ export default function CateringRequestsTable({ data }: any) {
     : localRestaurants;
 
   const onSubmit = async (values: any) => {
-    console.log(values,'values of accepted  requests')
+
     try {
       const res = await acceptMenuCateringRequest(values, editMenuItem?.id);
       if (res.success) {
@@ -150,7 +151,7 @@ export default function CateringRequestsTable({ data }: any) {
       toast.error(e.message || "Unexpected error");
     }
   };
-  console.log(data,'catering service requests')
+
   return (
     <>
       <div className="mb-6 flex w-full items-center justify-between gap-4">
@@ -172,12 +173,12 @@ export default function CateringRequestsTable({ data }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Title</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Event date</TableHead>
-                <TableHead>Event type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t("Title")}</TableHead>
+                <TableHead>{t("Customer")}</TableHead>
+                <TableHead>{t("Event date")}</TableHead>
+                <TableHead>{t("Event type")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

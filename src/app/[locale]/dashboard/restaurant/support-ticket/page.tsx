@@ -45,7 +45,7 @@ export default async function RestaurantTablePage({
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
    
-  console.log(data,'data for restaurant support ticket')
+  
   return (
     <div className="container mx-auto py-5">
       <h1 className="mb-4 text-2xl font-bold">Restaurant Support Ticket</h1>

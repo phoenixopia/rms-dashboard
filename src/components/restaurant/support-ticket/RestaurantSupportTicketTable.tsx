@@ -156,7 +156,6 @@ export default function RestaurantSupportTicketTable({ data }: any) {
     }
   };
 
-  console.log(data,'suppor ticket in client side')
 
   return (
     <>

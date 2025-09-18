@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   Table,
   TableBody,
@@ -67,7 +68,7 @@ export default function AcceptedCateringRequestsTable({ data }: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [menuTagsList, setMenuTagsList] = useState<any[]>([]);
   const [editMenuItem, setEditMenuItem] = useState<any | null>(null);
-
+  const t = useTranslations("full");
   const {
     register,
     handleSubmit,
@@ -136,7 +137,7 @@ export default function AcceptedCateringRequestsTable({ data }: any) {
     : localRestaurants;
 
   const onSubmit = async (values: any) => {
-    console.log(values,'values of accepted  requests')
+
     try {
       const res = await acceptMenuCateringRequest(values, editMenuItem?.id);
       if (res.success) {
@@ -150,7 +151,7 @@ export default function AcceptedCateringRequestsTable({ data }: any) {
       toast.error(e.message || "Unexpected error");
     }
   };
-  console.log(data,'accepted catering service requests')
+ 
   return (
     <>
       <div className="mb-6 flex w-full items-center justify-between gap-4">
@@ -172,11 +173,11 @@ export default function AcceptedCateringRequestsTable({ data }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Title</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Estimated Price</TableHead>
-                <TableHead>Prepayment Percentage</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t("Title")}</TableHead>
+                <TableHead>{t("Customer")}</TableHead>
+                <TableHead>{t("Estimated Price")}</TableHead>
+                <TableHead>{t("Prepayment Percentage")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
              
               </TableRow>
             </TableHeader>

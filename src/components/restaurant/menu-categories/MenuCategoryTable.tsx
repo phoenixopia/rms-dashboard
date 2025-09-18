@@ -145,7 +145,7 @@ const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
   const tagIds = watch("tags_ids") || [];
 
       const onSubmit = async (values: any) => {
-        console.log(values,'updated values for catergory')
+   
           const payload = {
     ...values,
     tags_ids: values.tags_ids?.map((tag: any) => tag.id ?? tag) || [],

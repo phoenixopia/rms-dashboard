@@ -44,7 +44,6 @@ export default async function CateringPage({
       </div>
     )
   }
-  console.log(data,'accepted catering request data')
 
   return (
     <div className="container mx-auto py-5">

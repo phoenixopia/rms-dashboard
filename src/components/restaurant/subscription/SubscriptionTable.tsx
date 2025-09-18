@@ -14,7 +14,7 @@ import { User } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import { SearchIcon } from "lucide-react";
@@ -64,7 +64,7 @@ const schema = z.object({
 type MenuCategoryFormValues = z.infer<typeof schema>;
 export default function SubscriptionTable({ data }: any) {
   const [searchRes, setSearchRes] = useState("");
-
+  const t = useTranslations("full");
   const [localRestaurants, setLocalRestaurants] = useState(data ?? []);
   
        
@@ -77,7 +77,7 @@ export default function SubscriptionTable({ data }: any) {
         <div className="w-full">
           <Link href="/dashboard/restaurant/subscription/new">
             <Button variant="outline" className="h-12 cursor-pointer font-bold">
-              Create
+              {t("Create")}
             </Button>
           </Link>
         </div>
@@ -89,12 +89,12 @@ export default function SubscriptionTable({ data }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Plan name</TableHead>
-                <TableHead>Billing cycle</TableHead>
-                <TableHead>Payment method</TableHead>
-                <TableHead>Start date</TableHead>
-                <TableHead>End date</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t("Plan name")}</TableHead>
+                <TableHead>{t("Billing cycle")} </TableHead>
+                <TableHead>{t("Payment method")}</TableHead>
+                <TableHead>{t("Start date")}</TableHead>
+                <TableHead>{t("End date")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

@@ -14,7 +14,7 @@ export default function CreateAdminFormPage() {
     async function fetchRoles() {
       try {
         const roleData = await getAllRoles();
-        console.log(roleData,'role data in create staff form page')
+       
         setRoles(roleData?.data?.roles || []);
       } catch (err) {
         console.error("Error fetching permissions:", err);

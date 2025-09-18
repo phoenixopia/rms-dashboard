@@ -100,7 +100,6 @@ export const getAllMenuCategoryByBranch = async (
 
 
 export async function createSupportTicket(data: any) {
-  console.log(data,'data to create support ticket')
 
   try {
     const authToken = await getAuthToken();
@@ -121,7 +120,6 @@ export async function createSupportTicket(data: any) {
 
 export async function updateTable(formData: any,itemId:any) {
 
-  console.log(formData,'formData to update tables')
   try {
     const authToken = await getAuthToken();
 
@@ -131,7 +129,7 @@ export async function updateTable(formData: any,itemId:any) {
         "Content-Type": "application/json",
       },
     });
-       console.log(response,'response after updating the tables')
+
     return {
       success: true,
       data: response.data,

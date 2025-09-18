@@ -14,7 +14,7 @@ import { User } from "@/types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import { SearchIcon } from "lucide-react";
@@ -124,7 +124,7 @@ export default function CateringTable({ data }: any) {
       is_active: true,
     },
   });
-
+  const t =useTranslations("full");
   const fuse = useMemo(() => {
     return new Fuse(localRestaurants, {
       keys: ["restaurant_name", "status"],
@@ -189,7 +189,7 @@ export default function CateringTable({ data }: any) {
       toast.error(e.message || "Unexpected error");
     }
   };
-console.log(data,'catering table')
+
   return (
     <>
       <div className="mb-6 flex w-full items-center justify-between gap-4">
@@ -205,7 +205,7 @@ console.log(data,'catering table')
         <div className="w-full">
           <Link href="/dashboard/restaurant/catering/new">
             <Button variant="outline" className="h-12 cursor-pointer font-bold">
-              Create
+              {t("Create")}
             </Button>
           </Link>
         </div>
@@ -217,11 +217,11 @@ console.log(data,'catering table')
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Title</TableHead>
-                <TableHead>Contact Person</TableHead>
-                <TableHead>Contact Info</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t("Title")}</TableHead>
+                <TableHead>{t("Contact Person")}</TableHead>
+                <TableHead>{t("Contact Info")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

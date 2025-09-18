@@ -34,7 +34,7 @@ export default function CreateCatering() {
           getAllMenuItems()
 
         ]);
-          console.log(branches,'all branches that are fetched')
+     
         // setPermissions(permissionsRes);
         setAllBranches(branches?.data || []);
       } catch (err) {
@@ -49,7 +49,7 @@ export default function CreateCatering() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-console.log(allBranches,'all branhces list')
+
   return (
     <div className="container py-5">
         <BranchSocialMediaForm

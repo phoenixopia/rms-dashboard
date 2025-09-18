@@ -206,7 +206,7 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
         <div>
             {confirmDelete && (
               <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 bg-opacity-50">
-                <div className="bg-white p-6 rounded shadow-lg">
+                <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg">
                   <h2 className="text-lg font-bold mb-4">Confirm Delete</h2>
                   <p className="mb-4">Are you sure you want to delete {confirmDelete.name} ?</p>
                   <div className="flex justify-end space-x-2">  

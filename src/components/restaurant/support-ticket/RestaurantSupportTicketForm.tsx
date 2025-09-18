@@ -66,7 +66,7 @@ useEffect(() => {
   }, [setValue]);
 
   const onSubmit = async (data: any) => {
-    console.log(data,'data for creating support ticket')
+  
     setIsSubmitting(true);
     try {
         const res = await createSupportTicket(data);

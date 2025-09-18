@@ -40,7 +40,7 @@ export default function MenuItemSocialMediaForm({
   const imageRef = useRef<HTMLInputElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
-  console.log(updatedData,'updated data in menu item form')
+ 
   const [menuItemId, setMenuItemId] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 

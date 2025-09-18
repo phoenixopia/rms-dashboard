@@ -50,8 +50,7 @@ const handleVideoUpload = async () => {
   let response;
   try {
     setIsSubmitting(true);
-    console.log("create social media");
-     console.log(formData,'form data')
+
 
    
          if (updatedData?.id) {

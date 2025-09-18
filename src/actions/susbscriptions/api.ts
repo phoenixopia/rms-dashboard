@@ -70,7 +70,6 @@ export async function createSubscription(data: any) {
     const response = await api.post("/subscription/subscribe",data, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
-   console.log(response,'response after subscription create successfuly')
 
     return { success: true, message: "Subscription created successfully!" };
   } catch (err: any) {
@@ -109,7 +108,7 @@ export async function updateMenuCategory(formData: any,itemId:any) {
 
 
 export const deleteCatering = async (id: string) => {
-  console.log(id,'id of the catering')
+
     const authToken = await getAuthToken();
 
   try {

@@ -146,14 +146,14 @@ export const allRoutes: RouteItem[] = [
 
 
 export const hasPermission = (user: any, permission: string): boolean => {
-  console.log(user,'user datas')
+ 
   if (!user || !user.permissions) return false;
   return user.permissions.includes(permission);
 };
 
 export const filterRoutesByPermission = (routes: RouteItem[], user: any): RouteItem[] => {
 
-  console.log(user,'user datas by permiss')
+  
 
   return routes.filter(route => {
         

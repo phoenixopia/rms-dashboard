@@ -31,8 +31,7 @@ export default async function SuperAdminRolePage({
   }
   
 
-  console.log(data,'menu categories data from server')
-  console.log(data?.data?.page,'menu categories data from server page')
+
   return (
     <div className="container mx-auto py-5">
       <h1 className="mb-4 text-2xl font-bold">Menu Categrories</h1>

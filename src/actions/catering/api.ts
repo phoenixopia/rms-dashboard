@@ -167,7 +167,7 @@ export const getAllAcceptedCateringRequests = async (
 
 export async function acceptMenuCateringRequest(formData: any,itemId:any) {
 
-  console.log(formData,'formData to update catering request')
+
   try {
     const authToken = await getAuthToken();
 
@@ -177,7 +177,7 @@ export async function acceptMenuCateringRequest(formData: any,itemId:any) {
         "Content-Type": "application/json",
       },
     });
-       console.log(response,'response after updating the catering requests')
+     
     return {
       success: true,
       data: response.data,
@@ -192,7 +192,7 @@ export async function acceptMenuCateringRequest(formData: any,itemId:any) {
 }
 
 export const rejectCateringRequests = async (id: string) => {
-  console.log(id,'id of the catering')
+
     const authToken = await getAuthToken();
     
   try {
@@ -204,8 +204,7 @@ export const rejectCateringRequests = async (id: string) => {
       },
     });
 
-    
- console.log(res,'------')
+
     const data = await res.json();
     return data;
   } catch (error) {
@@ -243,15 +242,14 @@ export async function createCateringImage(formData:FormData,itemId:any){
 
     try {
     const authToken = await getAuthToken();
-   console.log(formData,'form data')
-   console.log(itemId,'item id of ')
+
     const response = await api.put(`/catering/upload-image/${itemId}`,formData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
         // "Content-Type": "application/json",
       },
     });
-      console.log(response,'response after uploda catering image')
+    
     return {
       success: true,
       data: response.data,
@@ -287,7 +285,6 @@ export async function createCatering(data: any) {
 
 export async function updateMenuCatering(formData: any,itemId:any) {
 
-  console.log(formData,'formData to update catering')
   try {
     const authToken = await getAuthToken();
 
@@ -297,7 +294,7 @@ export async function updateMenuCatering(formData: any,itemId:any) {
         "Content-Type": "application/json",
       },
     });
-       console.log(response,'response after updating the catering')
+
     return {
       success: true,
       data: response.data,
@@ -313,7 +310,7 @@ export async function updateMenuCatering(formData: any,itemId:any) {
 
 
 export const deleteCatering = async (id: string) => {
-  console.log(id,'id of the catering')
+  
     const authToken = await getAuthToken();
 
   try {

@@ -24,7 +24,7 @@ export default async function SuperAdminRolePage() {
   // if (!data || data.length === 0) {
   //   return <div className="p-4 text-center">No Record Found</div>;
   // }
-  console.log(data,"Branch Data:" );
+  
   return (
     <div className="container mx-auto py-5">
       <h1 className="mb-4 text-2xl font-bold">Branches</h1>

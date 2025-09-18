@@ -34,11 +34,11 @@ export default async function CateringPage({
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
    
-  console.log(data,'subscription  data')
+ 
 
   return (
     <div className="container mx-auto py-5">
-      <h1 className="mb-4 text-2xl font-bold">Catering</h1>
+      <h1 className="mb-4 text-2xl font-bold">Subscription</h1>
       {(!data || data.length === 0)? (<>
       <div className="flex flex-row justify-between">
         <h1 className="flex items-center justify-center">Empty Record</h1>

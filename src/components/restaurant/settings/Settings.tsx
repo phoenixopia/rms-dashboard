@@ -181,7 +181,7 @@ const [restaurantImageFile, setRestaurantImageFile] = useState<File | null>(null
         getChargeSettings()
       ]);
 
-      console.log(basicInfo,'Basic info res from load data')
+
 
    setBasicInfo({
         restaurant_name: basicInfo.data.restaurant_name || restaurant.restaurant_name,
@@ -191,7 +191,7 @@ const [restaurantImageFile, setRestaurantImageFile] = useState<File | null>(null
 
       setContactInfo(contactRes?.data?.data || []);
       setBankAccounts(bankRes?.data?.rows || []);
-        console.log(chargeRes,'charge res from load data')
+   
       if (chargeRes.data) {
         setChargeSettings(chargeRes.data);
         setChargeForm(chargeRes.data);
@@ -476,7 +476,7 @@ const handleUploadImages = async () => {
     );
   }
 
-  console.log(basicInfo,'basic info state value')
+
   return (
     <div className="container mx-auto p-4">
 

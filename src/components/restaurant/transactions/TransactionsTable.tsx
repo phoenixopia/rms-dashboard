@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -28,7 +29,7 @@ export default function TransactionsTable({ data }: any) {
   const [detailTransaction, setDetailTransaction] = useState<any | null>(null);
   const [addFilter, setAddFilter] = useState(false);
   const router = useRouter();
-
+  const t = useTranslations("full");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -68,7 +69,7 @@ export default function TransactionsTable({ data }: any) {
             onClick={() => setAddFilter(!addFilter)}
             className="h-11 px-5 font-medium rounded-lg shadow-sm hover:bg-accent transition-colors"
           >
-            {addFilter ? "Close Filters" : "Add Filters"}
+            {addFilter ? `${t("Close Filters")}` :`${t("Add Filters")}` }
           </Button>
         </div>
 
@@ -86,13 +87,13 @@ export default function TransactionsTable({ data }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Order ID</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Payment Method</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t("Order Id")}</TableHead>
+                <TableHead>{t("Customer")}</TableHead>
+                <TableHead>{t("Amount")}</TableHead>
+                <TableHead>{t("Payment Method")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Date")} </TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

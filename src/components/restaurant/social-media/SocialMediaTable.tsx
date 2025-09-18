@@ -2,6 +2,7 @@
 import { useEffect, useRef,useCallback } from "react";
 import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   Table,
   TableBody,
@@ -73,6 +74,7 @@ export default function SocialMediaTable({ data }: any) {
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
   const [branchId, setBranchId] = useState<string>("");
+  const t = useTranslations("full");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localRestaurants, setLocalRestaurants] = useState(data ?? []);
   const [allBranches, setAllBranches] = useState<any[]>([]);
@@ -183,7 +185,7 @@ export default function SocialMediaTable({ data }: any) {
         const [branches] = await Promise.all([
           getAllBranches(),
         ]);
-        console.log(branches, 'all branches that are fetched');
+
         setAllBranches(branches?.data || []);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -213,7 +215,7 @@ export default function SocialMediaTable({ data }: any) {
     }
   
     const formData = new FormData();
-    console.log(branchId, 'branchId');
+   
     formData.append("branch_id", branchId);
     formData.append("title", title);
     formData.append("description", description);
@@ -222,8 +224,7 @@ export default function SocialMediaTable({ data }: any) {
   
     try {
       setIsSubmitting(true);
-      console.log("create social media");
-      console.log(formData, 'form data');
+  
   
       const response = await createSocialMedia(formData);
   
@@ -241,7 +242,6 @@ export default function SocialMediaTable({ data }: any) {
   };
 
   if (loading) return <div>Loading...</div>;
-  console.log(data, 'data of social media');
 
   return (
     <>
@@ -251,7 +251,7 @@ export default function SocialMediaTable({ data }: any) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="h-12 cursor-pointer font-bold">
-                Create Social Media Posts
+                Create Social Media Posts   
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
@@ -282,11 +282,11 @@ export default function SocialMediaTable({ data }: any) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted">
-                <TableHead>Branch name</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t("Branch Name")}</TableHead>
+                <TableHead>{t("Title")}</TableHead>
+                <TableHead>{t("Description")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead>{t("Action")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

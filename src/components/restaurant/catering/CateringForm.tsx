@@ -65,7 +65,7 @@ export default function CateringForm(onSuccess:any) {
   const deliveryAvailable = watch("delivery_available");
 
   const onSubmit = async (data: any) => {
-    console.log(data,'data for creating catering')
+
     setIsSubmitting(true);
     try {
         const res = await createCatering(data);

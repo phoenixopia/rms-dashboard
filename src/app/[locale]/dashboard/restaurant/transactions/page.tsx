@@ -19,7 +19,7 @@ export default async function TransactionPage({
   const params = await searchParams;
   let data:any = [];
   let error: string | null = null;
-   console.log(params?.status,'search params in transaction page')
+  
   const page = parseInt(params.page || "1", 10);
   const limit = parseInt(params.limit || "10", 10);
   const search = params.search || "";
@@ -49,7 +49,7 @@ export default async function TransactionPage({
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
    
-  console.log(data?.data,'transaction data')
+
 
   return (
     <div className="container mx-auto py-5">

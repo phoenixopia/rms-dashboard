@@ -43,7 +43,7 @@ export default function CreateCatering() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-console.log(allPLans,'all plans listssss')
+
   return (
     <div className="container py-5">
         <SubscriptionForm

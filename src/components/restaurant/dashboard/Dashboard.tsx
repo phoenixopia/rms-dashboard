@@ -151,10 +151,7 @@ export default function Dashboard() {
   }, []);
 
 
-   console.log("menu",menu)
-   console.log("branches",branches)
-   console.log("caterings",caterings)
-   console.log("tables",tables)
+
   return (
     <div className="flex flex-col gap-6 p-5">
       <h1 className="text-3xl font-bold">{t("Dashboard Overview")}</h1>

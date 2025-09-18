@@ -28,9 +28,7 @@ export const getAllTransactions = async (
   if (filters?.branch_id) params.append('branch_id', filters.branch_id);
   if (filters?.start_date) params.append('startDate', filters.start_date);
   if (filters?.end_date) params.append('endDate', filters.end_date);
-  
-  console.log(filters,'Filter parameterss:');
-   
+
   const url = `${BASEURL}/transaction/get-all?${params.toString()}`;
   const authToken = await getAuthToken();
 
