@@ -212,15 +212,17 @@ export async function updateMenuCategory(formData: any,itemId:any) {
   }
 }
 
+export async function deleteMenuCategory(id: string) {
+    const authToken = await getAuthToken();
 
-export const deleteMenuCategory = async (id: string) => {
   try {
-    const res = await fetch(`${BASEURL}/menu-category/${id}`, {
-      method: "DELETE",
-    });
 
-    const data = await res.json();
-    return data;
+        const response = await api.delete(`${BASEURL}/menu/delete-menu-category/${id}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+ 
+    return { success: true, message: "Menu Category Deleted successfully!" };
+
   } catch (error) {
     console.error("Failed to delete menu category:", error);
     return { success: false, message: "Failed to delete menu category" };

@@ -46,7 +46,7 @@ export default function CreateCatering() {
     <div className="container py-5">
         <CateringForm
     
-          onSuccess={() => router.push("/dashboard/restaurant/branch")}
+          onSuccess={() => router.push("/dashboard/restaurant/catering")}
         />
 
     </div>

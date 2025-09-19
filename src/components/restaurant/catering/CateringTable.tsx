@@ -416,7 +416,8 @@ export default function CateringTable({ data }: any) {
                         <label className="block text-sm font-medium">Min Advance Days</label>
                         <Input 
                           type="number" 
-                          {...register("min_advance_days")} 
+                          {...register("min_advance_days",{valueAsNumber:true})} 
+                          
                         />
                         {errors.min_advance_days && (
                           <p className="text-sm text-red-500">{errors.min_advance_days.message}</p>

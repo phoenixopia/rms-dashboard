@@ -466,9 +466,6 @@ const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
                           if (res.success) {
                             toast.success("Menu category deleted successfully");
             
-                            setLocalRestaurants((prev:any) =>
-                              prev.filter((item: any) => item.id !== deleteItemId)
-                            );
                           } else {
                             toast.error(res.message || "Failed to Menu category");
                           }

@@ -46,7 +46,7 @@ export default function CreateRolePage() {
         <MenuCategoriesForm
           allbranches={allBranches}
           // item={{ name: "", id: "", ... }} 
-          onSuccess={() => router.push("/dashboard/restaurant/branch")}
+          onSuccess={() => router.push("/dashboard/restaurant/menu-categories")}
         />
 
     </div>

@@ -46,3 +46,26 @@ export const getAllTransactions = async (
   const data = await response.json();
   return data;
 };
+
+export const getStatTransactions = async () => {
+
+
+
+
+  const url = `${BASEURL}/transaction/get-all?page=1`;
+  const authToken = await getAuthToken();
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch transaction data: ${response.statusText}`);
+  }
+  
+  const data = await response.json();
+  return data;
+};

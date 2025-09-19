@@ -148,7 +148,7 @@ export async function updateRestaurantStaffAction(
       headers: { Authorization: `Bearer ${authToken}` },
     });
    
-    return { success: true, message: "staff updated succ essfully!" };
+    return { success: true, message: "staff updated successfully!" };
   } catch (err: any) {
     return {
       success: false,

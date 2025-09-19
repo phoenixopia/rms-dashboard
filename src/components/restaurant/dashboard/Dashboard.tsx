@@ -120,14 +120,14 @@ const mockData = {
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-export default function Dashboard() {
+export default function Dashboard(data:any) {
   const t = useTranslations("full");
   const [menu, setMenu] = useState();
   const [branches, setBranches] = useState();
   const [caterings, setCaterings] = useState();
   const [tables, setTables] = useState();
 
-
+  console.log(data,"Dashboard Data:");
 
 
     useEffect(() => {
@@ -218,9 +218,9 @@ export default function Dashboard() {
      
       </div>
 
-      {/* Charts Section */}
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        {/* Weekly Revenue Line Chart */}
+      
         <Card className="col-span-4 border-none">
           <CardHeader>
             <CardTitle>Weekly Revenue</CardTitle>
@@ -247,7 +247,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* User Distribution Pie Chart */}
+  
         <Card className="col-span-3 border-none">
           <CardHeader>
             <CardTitle>User Distribution</CardTitle>
@@ -281,7 +281,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        {/* Top Restaurants Bar Chart */}
+      
         <Card className="col-span-4 border-none">
           <CardHeader>
             <CardTitle>Top Restaurants by Revenue</CardTitle>
@@ -303,21 +303,20 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Recent Transactions List */}
         <Card className="col-span-3 border-none">
           <CardHeader>
             <CardTitle>Recent Transactions</CardTitle>
-            <div className="text-muted-foreground flex items-center space-x-2 text-sm">
-              <Activity className="h-4 w-4" />
-              <span>Last 24 hours</span>
-            </div>
           </CardHeader>
           <CardContent>
             <ul className="space-y-4">
-              {mockData.recentTransactions.map((tx) => (
+              {data?.data?.length === 0 && (<p>No recent transactions found.</p>
+              )}
+              {data?.data?.map((tx:any) => (
                 <li key={tx.id} className="flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{tx.customer}</span>
+                  <div className="flex flex-row space-x-2">
+                    <span className="text-sm font-sm">Customer Name:</span>
+
+                    <span className="text-sm font-semibold">{tx.Customer?.first_name ? tx.Customer?.first_name :'-'} {tx.Customer?.last_name ?tx.Customer?.last_name :'-'}</span>
                     <span className="text-muted-foreground text-xs">
                       {tx.restaurant}
                     </span>

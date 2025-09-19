@@ -33,7 +33,7 @@ const schema = z.object({
 
 type CateringFormValues = z.infer<typeof schema>;
 
-export default function CateringForm(onSuccess:any) {
+export default function CateringForm({onSuccess}: {onSuccess: () => void}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router=useRouter()
   const {
