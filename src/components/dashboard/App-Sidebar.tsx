@@ -13,13 +13,15 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, usePathname } from "@/i18n/navigation";
 import { RouteItem } from "@/lib/roleRoutes";
-
+import { use } from "react";
+import { useTranslations } from "use-intl";
 interface SidebarProps {
   routes: RouteItem[];
 }
 
 export function AppSidebar({ routes }: SidebarProps) {
   const pathname = usePathname();
+  const t =useTranslations("full");
   return (
     <Sidebar className="bg-card z-100 border-none">
       <SidebarContent className="bg-card">
@@ -40,7 +42,7 @@ export function AppSidebar({ routes }: SidebarProps) {
                     >
                       <Link href={route.href} className="">
                         <route.icon className="h-4 w-4" />
-                        <span>{route.label}</span>
+                        <span>{t(`${route.label}`)}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

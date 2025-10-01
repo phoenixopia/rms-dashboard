@@ -75,6 +75,7 @@ export function DashboardHeader() {
     }
   };
 
+
   const markAllAsRead = async () => {
     try {
       const token = await getAuthToken();

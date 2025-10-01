@@ -18,7 +18,6 @@ export const getAllRestaurantsWithSubscriptions = async (
     throw new Error("Authentication token not found.");
   }
 
-  // console.log("Token", authToken);
 
   const response = await fetch(url, {
     method: "GET",
@@ -28,13 +27,13 @@ export const getAllRestaurantsWithSubscriptions = async (
     },
   });
 
+
   if (!response.ok) {
     throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
   }
 
   const data: BackendResponse = await response.json();
 
-  // console.log("data", data.data);
 
   return data.data;
 };
@@ -51,7 +50,7 @@ export async function createRestaurant(formData: FormData) {
       formData.get("rtl_enabled") === "on",
   });
 
-  console.log("Restaurant Create Data", validatedFields.data);
+
 
   if (!validatedFields.success) {
     return {
@@ -66,8 +65,7 @@ export async function createRestaurant(formData: FormData) {
   try {
     const authToken = await getAuthToken();
 
-    // console.log("Rest", rest);
-
+  
     const response = await api.post("/restaurant/register", rest, {
       headers: {
         Authorization: `Bearer ${authToken}`,

@@ -13,7 +13,7 @@ export default function SafeRestaurantImage({
   alt: string;
 }) {
   const [imgSrc, setImgSrc] = useState(src || fallbackUrl);
-  console.log("Image src", imgSrc);
+
 
   return (
     <Image

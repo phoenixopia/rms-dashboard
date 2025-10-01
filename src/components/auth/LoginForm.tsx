@@ -9,19 +9,22 @@ import { loginApi } from "@/actions/route";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-
+import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { getAuthToken } from "@/auth/auth";
-
+import { useRouter } from "@/i18n/navigation";
 type FormData = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
+    const [authChecked, setAuthChecked] = useState(false);
   const { login } = useAuth();
   const [isPending, startTransition] = useTransition();
+  const {user,isAuthenticated}=useAuth()
+  const router =useRouter();
   const [activeTab, setActiveTab] = useState<"email" | "phone_number">("email");
   const {
     register,
@@ -35,6 +38,7 @@ export default function LoginForm() {
       password: "",
     },
   });
+
 
   const onSubmit = (data: FormData) => {
     toast.dismiss();
@@ -62,11 +66,27 @@ export default function LoginForm() {
     setActiveTab(value as "email" | "phone_number");
     reset();
   };
-
+  useEffect(() => {
+    if (user !== null) {
+      setAuthChecked(true);
+    
+      if (!isAuthenticated) {
+        router.push("/login");
+      } else if (user?.requiresPasswordChange) {
+        router.push("/change-password");
+      } else if(user?.role_tag === "super_admin"){
+        router.push("/dashboard")
+      } else if(user?.role_tag === "restaurant_admin"){
+        router.push("/dashboard/restaurant")
+      } else{
+        router.push("/dashboard/restaurant")
+      }
+    }
+  }, [isAuthenticated, user, router]);
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="relative flex w-full">
-        {/* Left Side: Image Container */}
+  
         <div className="hidden h-[700px] w-1/2 flex-shrink-0 lg:block">
           <Image
             src="/Images/on2.png"
@@ -78,7 +98,6 @@ export default function LoginForm() {
           />
         </div>
 
-        {/* Right Side: Login Form */}
         <div className="flex w-full items-center justify-center p-8 lg:w-1/2">
           <div className="w-full max-w-sm">
             <h1 className="mb-2 text-center text-3xl font-bold">Welcome</h1>
