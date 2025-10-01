@@ -69,6 +69,7 @@ export default function AdminsTable({ users }: any) {
     async function fetchRoles() {
       try {
         const roleData: any = await getAllRoles();
+        console.log(roleData,"roleData");
         setRoles(roleData?.data?.roles || []);
       } catch (err) {
         console.error("Error fetching permissions:", err);

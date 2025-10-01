@@ -32,9 +32,12 @@ export default async function SuperAdminRestaurantPage({
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
 
+  console.log(data)
+
   if (!data) {
     return <div className="p-4 text-center">No restaurants found.</div>;
   }
+
 
   return (
     <div className="container mx-auto py-5">

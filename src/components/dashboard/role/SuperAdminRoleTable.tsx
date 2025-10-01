@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; // Assuming shadcn-ui table is here
+} from "@/components/ui/table"; 
 import { RoleData } from "@/types";
 
 import { useMemo, useState } from "react";
@@ -29,10 +29,10 @@ interface SuperAdminRoleTableProps {
   data: RoleData[];
 }
 
-export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
+export default function RestaurantsTable({ data }: any) {
   const [searchRes, setSearchRes] = useState("");
   const [localRoles, setLocalRestaurants] = useState(data ?? []);
-
+ console.log(data,"data");
   const fuse = useMemo(() => {
     return new Fuse(localRoles, {
       keys: ["restaurant_name", "status"],
@@ -80,7 +80,7 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((role, index) => {
+            {data?.data?.roles?.map((role:any, index:any) => {
               return (
                 <TableRow
                   key={role.id}

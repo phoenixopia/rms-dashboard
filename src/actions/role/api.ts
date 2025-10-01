@@ -130,11 +130,12 @@ export const getAllRoles = async () => {
     },
   });
   
+
   if (!response.ok) {
     throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
   }
 
-  const data: RoleResponse = await response.json();
+  const data: any = await response.json();
   return data;
 };
 

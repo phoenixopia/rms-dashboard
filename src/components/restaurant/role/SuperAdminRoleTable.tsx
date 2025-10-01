@@ -81,7 +81,7 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((role, index) => {
+            {data?.map((role, index) => {
               return (
                 <TableRow
                   key={role.id}

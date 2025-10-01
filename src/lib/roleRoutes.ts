@@ -48,7 +48,7 @@ export const allRoutes: RouteItem[] = [
       roles: ["super_admin"]
     },
 
-    { href: "/dashboard/superadmin/admins", label: "Admins", icon: Users },
+    { href: "/dashboard/superadmin/admins", label: "Admins", icon: Users ,},
     { href: "/dashboard/superadmin/role", label: "Roles", icon: ShieldCheck },
     { href: "/dashboard/superadmin/plan", label: "Plans", icon: Banknote },
     {
