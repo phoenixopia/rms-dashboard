@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/table"; // Assuming shadcn-ui table is here
 import { User } from "@/types";
 // import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import Fuse from "fuse.js";
-import { SearchIcon } from "lucide-react";
+import { Loader2, SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { BASEURL } from "@/actions/api";
+import { getAuthToken } from "@/auth/auth";
+import { toast } from "sonner";
 
 interface AdminTableProps {
   users: User[];
@@ -33,7 +36,38 @@ interface AdminTableProps {
 export default function AdminsTable({ users }: AdminTableProps) {
   const [searchRes, setSearchRes] = useState("");
   const [localRestaurants, setLocalRestaurants] = useState(users ?? []);
+  const [pending, startTransition] = useTransition();
+  const handleDeleteAdmin = (userId: string) => {
+    startTransition(async () => {
+      try {
+        const url = `${BASEURL}/user/delete/${userId}`;
+        const token = await getAuthToken();
 
+        if (!token) {
+          throw new Error("Authentication token not found.");
+        }
+
+        const res = await fetch(url, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          const e = await res.json();
+          console.log(e);
+          throw new Error(`${e}`);
+        }
+
+        toast.success("Admin deleted successfully!");
+      } catch (e) {
+        console.error("Error deleting admin:", e);
+        toast.error("Failed to delete admin.");
+      }
+    });
+  };
   const fuse = useMemo(() => {
     return new Fuse(localRestaurants, {
       keys: ["restaurant_name", "status"],
@@ -74,7 +108,8 @@ export default function AdminsTable({ users }: AdminTableProps) {
               <TableRow className="bg-muted">
                 <TableHead>No.</TableHead>
                 <TableHead>Profile</TableHead>
-                <TableHead>Full Name</TableHead>
+                <TableHead>First Name</TableHead>
+                <TableHead>Last Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>Status</TableHead>
@@ -95,11 +130,12 @@ export default function AdminsTable({ users }: AdminTableProps) {
                       {user.profile_picture && (
                         <SafeRestaurantImage
                           src={user.profile_picture}
-                          alt={`${user.full_name} logo`}
+                          alt={`${user.first_name} logo`}
                         />
                       )}
                     </TableCell>
-                    <TableCell>{user.full_name}</TableCell>
+                    <TableCell>{user.first_name}</TableCell>
+                    <TableCell>{user.last_name}</TableCell>
 
                     <TableCell>{user.email ?? "N/A"}</TableCell>
                     <TableCell>{user.phone_number ?? "N/A"}</TableCell>
@@ -124,14 +160,26 @@ export default function AdminsTable({ users }: AdminTableProps) {
                         <DropdownMenuContent className="bg-background">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href="#">Detail</Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href="#">Edit</Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href="#">Delete</Link>
+
+                          <DropdownMenuItem className="item-center flex cursor-pointer justify-center">
+                            {pending ? (
+                              <Loader2 />
+                            ) : (
+                              <span
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      `Are you sure you want to delete ${user.first_name} ${user.last_name}?`,
+                                    )
+                                  ) {
+                                    alert("Not Supported");
+                                    // handleDeleteAdmin(user.id);
+                                  }
+                                }}
+                              >
+                                Delete
+                              </span>
+                            )}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

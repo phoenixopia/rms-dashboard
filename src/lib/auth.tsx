@@ -72,7 +72,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }) => {
     const adminLoginData: AdminLoginData = response.data.data;
 
-
     const requiresPasswordChangeFromApi =
       response.requiresPasswordChange || false;
 

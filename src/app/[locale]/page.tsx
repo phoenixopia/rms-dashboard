@@ -1,7 +1,7 @@
-import { ModeToggle } from "@/components/custome/shared/ModeToggle";
+// import { ModeToggle } from "@/components/custome/shared/ModeToggle";
 import Header from "@/components/landing/Header";
 import MidMain from "@/components/landing/MainSection";
-import { Link } from "@/i18n/navigation";
+// import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 import React from "react";

@@ -33,7 +33,7 @@ export interface RouteItem {
 
 export const allRoutes: RouteItem[] = [
 
-    {
+      {
       href: "/dashboard/superadmin/overview",
       label: "Dashboard",
       icon: LayoutDashboard,
@@ -46,6 +46,36 @@ export const allRoutes: RouteItem[] = [
       icon: Building,
       permission: "",
       roles: ["super_admin"]
+    },
+
+    { href: "/dashboard/superadmin/admins", label: "Admins", icon: Users },
+    { href: "/dashboard/superadmin/role", label: "Roles", icon: ShieldCheck },
+    { href: "/dashboard/superadmin/plan", label: "Plans", icon: Banknote },
+    {
+      href: "/dashboard/superadmin/subscription",
+      label: "Subscriptions",
+      icon: BadgeDollarSign,
+    },
+    {
+      href: "/dashboard/superadmin/support-tickets",
+      label: "Support Tickets",
+      icon: Ticket,
+    },
+    {
+      href: "/dashboard/superadmin/videos",
+      label: "Media Management",
+      icon: Video,
+    },
+    {
+      href: "/dashboard/superadmin/activity-log",
+      label: "Activity Logs",
+      icon: FileClock,
+    },
+
+    {
+      href: "/dashboard/superadmin/settings",
+      label: "Settings",
+      icon: Settings,
     },
     {
        href: "/dashboard/superadmin/admins", 
