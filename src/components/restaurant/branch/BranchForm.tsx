@@ -38,7 +38,7 @@ const createBranchFormSchema = z.object({
   manager_id: z.string().optional(),
   staff_ids: z.array(z.string()).optional(),
 });
-
+// Infer the form values from the schema
 
 type BranchFormValues = z.infer<typeof createBranchFormSchema>;
 
