@@ -1,3 +1,5 @@
+"use server";
+
 import {
   Permission,
   PermissionsApiResponse,
@@ -52,7 +54,7 @@ export const getAllRestuarantPermissions = async (): Promise<Permission[]> => {
       Authorization: `Bearer ${authToken}`,
     },
   });
-  console.log(response, "Response from getAllRestuarantPermissions");
+ 
   if (!response.ok) {
     throw new Error(`Failed to fetch restaurants: ${response.statusText}`);
   }
@@ -151,7 +153,6 @@ export async function createRoleRestuarant(formData: any) {
       validatedFields, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
-    console.log(response, "Response from createRoleRestuarant");
 
     return { success: true, message: "Role created successfully!" };
   } catch (err: any) {
@@ -196,7 +197,67 @@ export async function createRole(formData: RoleFormValues) {
 }
 
 
+export async function createBranch(data: any) {
 
+    
+  try {
+    const authToken = await getAuthToken();
+     
+    const response = await api.post("/restaurant/branches/create-branch",data, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+
+    return { success: true, message: "Branch created successfully!" };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err?.response?.data?.message || "Failed to create branch.",
+    };
+  }
+}
+
+export async function updateBranch(data: any,id:any) {
+
+  try {
+    const authToken = await getAuthToken();
+     
+    const response = await api.put(`/restaurant/update-branch/${id}`,data, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+     if (!response?.data?.success) {
+      return { success: false, message: response?.data?.message || "Failed to  updated branch!" } 
+     }
+
+
+    return { success: true, message: "Branch updated successfully!" };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err?.response?.data?.message || "Failed to update branch.",
+    };
+  }
+}
+
+
+export const deleteBranch = async (id: string) => {
+
+    const authToken = await getAuthToken();
+
+  try {
+    const res = await fetch(`${BASEURL}/restaurant/branches/${id}`, {
+      headers:{ Authorization: `Bearer ${authToken}` },
+      method: "DELETE",
+    });
+
+
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to delete the branch:", error);
+    return { success: false, message: "Failed to delete the branch" };
+  }
+};
 export const getAllBranches = async () => {
   const url = `${BASEURL}/restaurant/get-all-branches`;
 
@@ -213,14 +274,15 @@ export const getAllBranches = async () => {
       Authorization: `Bearer ${authToken}`,
     },
   });
-  // console.log(await response.json(), "Response from getAllBranches");
-
+ 
   if (!response.ok) {
     throw new Error(`Failed to fetch restaurants branches: ${response.statusText}`);
   }
 
   const data:any = await response.json();
-  return data.data.roles;
+  
+
+  return data.data;
 };
 
 
@@ -240,9 +302,7 @@ export async function updateRole(formData: RoleFormValues, roleId: string) {
     };
   }
 
-  console.log("Data validation", validatedFields.data);
-
-  console.log("Permissions", validatedFields.data.permissionIds);
+ 
 
   try {
     const authToken = await getAuthToken();

@@ -25,7 +25,7 @@ import { SidebarTrigger } from "../ui/sidebar";
 export function DashboardHeader() {
   const { user, logout } = useAuth();
 
-  console.log("User", user);
+
 
   //   const fullName =
   //     user?.first_name && user?.last_name
