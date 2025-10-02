@@ -53,22 +53,25 @@ const MidMain = () => {
       <section id="services" className="w-screen bg-white py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-row justify-between gap-8">
+            {/* Left Side Image */}
             <div className="z-10 hidden md:block md:w-[30%]">
               <img
                 src="/cover2.jpeg"
-                alt="front cover"
-                className="h-[30rem] w-[50rem]"
+                alt="Restaurant Management Services"
+                className="h-[30rem] w-[50rem] rounded-2xl object-cover shadow-lg"
               />
             </div>
-            <div className="flex w-full flex-col gap-4 text-gray-800 md:w-[70%]">
-              <p className="text-[1.8rem] font-extrabold text-black">
-                Lorem ipsum dolor sit
-              </p>
+
+            {/* Right Side Content */}
+            <div className="flex w-full flex-col gap-6 text-gray-800 md:w-[70%]">
+              <h2 className="text-[1.8rem] font-extrabold text-black">
+                Comprehensive Restaurant Management Services
+              </h2>
+
               <div className="flex flex-row items-center gap-2">
                 <p className="text-[1.4rem] font-semibold text-[#FF7632]">
-                  Lorem ipsum
+                  Streamline Your Restaurant Operations
                 </p>
-
                 <svg
                   width="26"
                   height="88"
@@ -83,11 +86,32 @@ const MidMain = () => {
                 </svg>
               </div>
 
-              <p className="text-[1rem] text-gray-800">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              <ul className="list-inside list-disc space-y-2 text-[1rem] text-gray-800">
+                <li>
+                  <strong>Food Ordering & Delivery:</strong> Seamlessly manage
+                  online orders and real-time delivery tracking.
+                </li>
+                <li>
+                  <strong>Catering Services:</strong> Plan, manage, and deliver
+                  catering for events of all sizes.
+                </li>
+                <li>
+                  <strong>Social Media Promotion:</strong> Boost your
+                  restaurant’s visibility by promoting menu items online.
+                </li>
+                <li>
+                  <strong>Table Reservation:</strong> Simplify booking and
+                  manage customer flow efficiently.
+                </li>
+                <li>
+                  <strong>Menu Management & Updates:</strong> Keep your menu
+                  updated with ease across all platforms.
+                </li>
+              </ul>
+
+              <p className="text-[1rem] text-gray-700">
+                Our platform helps restaurants enhance customer experience,
+                optimize operations, and grow their business effortlessly.
               </p>
             </div>
           </div>
@@ -104,8 +128,10 @@ const MidMain = () => {
               </p>
 
               <p className="text-[1rem] text-gray-800">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt
+                Enjoy a seamless dining experience with our all-in-one
+                restaurant management app. From ordering your favorite meals to
+                booking tables and scheduling catering, everything you need is
+                just a few taps away.
               </p>
               <div className="flex flex-row space-x-8 py-6">
                 <div className="flex flex-col">
@@ -132,7 +158,7 @@ const MidMain = () => {
                   <div className="flex flex-col gap-2 py-4">
                     <p className="font-bold text-black">1. Download</p>
                     <p className="text-[0.9rem] text-black">
-                      Lorem ipsum dolor sit olor s
+                      Quick, easy, and free to install.
                     </p>
                   </div>
                 </div>
@@ -169,7 +195,8 @@ const MidMain = () => {
                   <div className="flex flex-col gap-2 py-4">
                     <p className="font-bold text-black">2. Register</p>
                     <p className="text-[0.9rem] text-black">
-                      Lorem ipsum dolor sit olor s
+                      Set your preferences, explore nearby restaurants, and save
+                      your favorites.
                     </p>
                   </div>
                 </div>
@@ -197,7 +224,8 @@ const MidMain = () => {
                   <div className="flex flex-col gap-2 py-4">
                     <p className="font-bold text-black">3. Start</p>
                     <p className="text-[0.9rem] text-black">
-                      Lorem ipsum dolor sit olor s
+                      Enjoy fast delivery and exclusive offers from your
+                      favorite restaurants.
                     </p>
                   </div>
                 </div>

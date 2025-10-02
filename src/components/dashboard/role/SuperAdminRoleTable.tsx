@@ -1,6 +1,5 @@
 "use client";
 
-import SafeRestaurantImage from "@/components/custome/shared/SafeImage";
 import {
   Table,
   TableBody,
@@ -8,12 +7,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"; // Assuming shadcn-ui table is here
-import { Restaurant, RoleData, RoleResponse } from "@/types";
-import Image from "next/image";
+} from "@/components/ui/table"; 
+import { RoleData } from "@/types";
+
 import { useMemo, useState } from "react";
 import Fuse from "fuse.js";
-import { Edit, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -30,10 +29,10 @@ interface SuperAdminRoleTableProps {
   data: RoleData[];
 }
 
-export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
+export default function RestaurantsTable({ data }: any) {
   const [searchRes, setSearchRes] = useState("");
   const [localRoles, setLocalRestaurants] = useState(data ?? []);
-
+ console.log(data,"data");
   const fuse = useMemo(() => {
     return new Fuse(localRoles, {
       keys: ["restaurant_name", "status"],
@@ -81,7 +80,7 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((role, index) => {
+            {data?.data?.roles?.map((role:any, index:any) => {
               return (
                 <TableRow
                   key={role.id}
@@ -108,9 +107,6 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Detail</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
                           <Link
                             href={`/dashboard/superadmin/role/new/${role.id}/edit`}
                           >
@@ -118,7 +114,7 @@ export default function RestaurantsTable({ data }: SuperAdminRoleTableProps) {
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer">
-                          <Link href="#">Delete</Link>
+                          <span>Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

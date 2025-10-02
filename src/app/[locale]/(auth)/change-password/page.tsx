@@ -34,7 +34,7 @@ export default function ChangePasswordPage() {
   const onSubmit = (data: FormData) => {
     toast.dismiss();
 
-    console.log("User Id", user?.id);
+
 
     if (!user?.id) {
       toast.error("User not found");

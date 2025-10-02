@@ -81,7 +81,6 @@ export default function RestaurantsTable({
                 <TableHead>Status</TableHead>
                 <TableHead>Start Date</TableHead>
                 <TableHead>End Date</TableHead>
-                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -154,34 +153,6 @@ export default function RestaurantsTable({
                             day: "numeric",
                           })
                         : "N/A"}
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <div className="cursor-pointer rounded-sm bg-[#FF7632] px-3 py-1 text-sm text-white">
-                            Action
-                          </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="bg-background">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href="#">Detail</Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href="#">Edit</Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">
-                            <Link href="#">
-                              {restaurant.status !== "active" ? (
-                                <span>Activate</span>
-                              ) : (
-                                <span>Deactivate</span>
-                              )}
-                            </Link>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 );

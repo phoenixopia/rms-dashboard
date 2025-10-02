@@ -2,7 +2,18 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
+
   images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', 
+      },
+      {
+        protocol: 'http',
+        hostname: '**', 
+      },
+    ],
     domains: [
       "graphicsfamily.com",
       "img.freepik.com",
@@ -11,6 +22,11 @@ const nextConfig: NextConfig = {
       "images-platform.99static.com",
       "dypdvfcjkqkg2.cloudfront.net",
     ],
+  },
+   experimental: {
+    serverActions: {
+      bodySizeLimit: '200mb',
+    },
   },
 };
 
