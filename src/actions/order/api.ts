@@ -2,7 +2,7 @@ import { BackendAdminResponse, UsersResponse } from "@/types";
 import api, { BASEURL } from "../api";
 import { getAuthToken } from "@/auth/auth";
 import { createRestaurantAdminSchema } from "@/schemas/schemas";
-import { table } from "console";
+// import { table } from "console";
 
 export const getAllOrders = async (
   page: number = 1,
@@ -92,12 +92,25 @@ export const getAlltables = async (
 export async function createOrder({table_number,items,order_type,branch_id="20bbd69a-6016-4fef-8d7e-9978c79e1e2c",total_price}:{total_price:number, table_number?:string, items: Array<number>, order_type?:string, branch_id?:string}) {
   const url = `${BASEURL}/kds/create-order`;
   const authToken = await getAuthToken();
-  var post_body={"table_id":table_number, "items":items, "type":order_type, "branch_id":branch_id,"total_price":total_price};
+  // var post_body={"table_id":table_number, "items":items, "type":order_type, "branch_id":branch_id,"total_price":total_price};
+    var post_body: {
+    table_id?: string,
+    items: Array<number>,
+    type?: string,
+    branch_id?: string,
+    total_price: number
+  } = {
+    table_id: table_number,
+    items: items,
+    type: order_type,
+    branch_id: branch_id,
+    total_price: total_price
+  };
   
   // const
    
   if(!table_number){
-    delete post_body.table_number
+    delete post_body.table_id
   }
   if(!branch_id){
     delete post_body.branch_id
@@ -120,7 +133,7 @@ export async function createOrder({table_number,items,order_type,branch_id="20bb
 
 
 export async function getOrderById(order_id:string){
-  const baseURL = typeof window !== 'undefined' ? '' : process.env.BASEURL;
+  // const baseURL = typeof window !== 'undefined' ? '' : process.env.BASEURL;
   const url = `${BASEURL}/kds/get-order-byId/${order_id}`;
   const authToken = await getAuthToken();
 
