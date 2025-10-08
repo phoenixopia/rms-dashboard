@@ -12,9 +12,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, usePathname } from "@/i18n/navigation";
+import { useAuth } from "@/lib/auth";
 import { RouteItem } from "@/lib/roleRoutes";
+
+import { useRouteGuard } from "@/lib/useRouteGuard";
 import { use } from "react";
 import { useTranslations } from "use-intl";
+import AccessDenied from "../AccessDenied";
+
 interface SidebarProps {
   routes: RouteItem[];
 }
@@ -22,6 +27,23 @@ interface SidebarProps {
 export function AppSidebar({ routes }: SidebarProps) {
   const pathname = usePathname();
   const t =useTranslations("full");
+
+    const { isAuthenticated, user } = useAuth();
+  
+  const accessState = useRouteGuard(user);
+
+
+    if (accessState === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (accessState === 'denied') {
+    return <AccessDenied />;
+  }
   return (
     <Sidebar className="bg-card z-100 border-none">
       <SidebarContent className="bg-card">
@@ -32,10 +54,10 @@ export function AppSidebar({ routes }: SidebarProps) {
           </SidebarGroupLabel>
           <SidebarGroupContent className="pt-8">
             <SidebarMenu className="flex flex-col gap-2">
-              {routes.map((route) => {
+              {routes.map((route,key) => {
                 const isActive = pathname.startsWith(route.href);
                 return (
-                  <SidebarMenuItem className="pl-4" key={route.href}>
+                  <SidebarMenuItem className="pl-4" key={key}>
                     <SidebarMenuButton
                       asChild
                       className={`${isActive ? "bg-muted" : ""}`}
