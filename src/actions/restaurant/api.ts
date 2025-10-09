@@ -78,10 +78,11 @@ export async function createRestaurant(formData: FormData) {
       data: response.data,
       message: "Restaurant created successfully",
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Something went wrong",
+      message: e?.response?.data?.message || "Failed to create restaurant.",
     };
   }
 }

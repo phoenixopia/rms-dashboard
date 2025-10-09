@@ -49,10 +49,11 @@ export async function createSocialMedia(data: any) {
 
 
     return { success: true, message: "Social media post created successfully!" };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create social media post.",
+      message: e?.response?.data?.message || "Failed to create social media.",
     };
   }
 }
@@ -92,10 +93,11 @@ export async function updateSocialMedia(data: any,id:any) {
     });
    
     return { success: true, message: "Social media post created successfully!" };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to update social media post.",
+      message: e?.response?.data?.message || "Failed to update social media post.",
     };
   }
 }

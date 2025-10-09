@@ -8,7 +8,7 @@ export default async function SuperAdminRolePage() {
 
   try {
     data = await getAllRoles();
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error fetching roles data:", err);
     error = `Failed to load Roles. Please try again later.${err}`;
   }

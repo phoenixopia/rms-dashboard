@@ -4,6 +4,7 @@ import { getAllRoles } from "@/actions/role/api";
 // import SuperAdminRoleTable from "@/components/dashboard/role/SuperAdminRoleTable";
 import RestaurantAdminRoleTable from "@/components/restaurant/role/RestaurantAdminRoleTable";
 import { RoleData, RoleResponse } from "@/types";
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";

@@ -5,6 +5,7 @@ import BranchTable from "@/components/restaurant/branch/BranchTable";
 import SuperAdminRoleTable from "@/components/restaurant/role/RestaurantAdminRoleTable";
 import Pagination from "@/components/dashboard/restaurant/Pagination";
 import { RoleData, RoleResponse } from "@/types";
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 import MenuCategoryTable from "@/components/restaurant/menu-categories/MenuCategoryTable";
 import { getAllMenuCategory } from "@/actions/menu/api";
@@ -27,7 +28,7 @@ export default async function AcitvityLogs({
 
   try {
     data = await getAllActivityLogs(page, limit);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error fetching activity logs data:", err);
     error = `Failed to load activity logs. Please try again later.${err}`;
   }

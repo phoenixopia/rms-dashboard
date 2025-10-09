@@ -93,7 +93,7 @@ export default function RoleForm({
       toast(isUpdateMode ? "Role Updated" : "Role Created");
 
       onSuccess();
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error("Form submission faild");
     }
   };

@@ -158,10 +158,11 @@ export async function deleteRoles(data:any){
       return { success: false, message: "Failed to delete the role!" };
     }
     return { success: true, message: "Role deleted successfully!" };
-  } catch (err: any) {
+    } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to delete role.",
+      message: e?.response?.data?.message || "Failed to delete role.",
     };
   }
 }
@@ -189,10 +190,11 @@ export async function createRoleRestuarant(formData: any) {
  
 
     return { success: true, message: "Role created successfully!" };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create role.",
+      message: e?.response?.data?.message || "Failed to create role.",
     };
   }
 }
@@ -222,10 +224,11 @@ export async function createRole(formData: RoleFormValues) {
     });
 
     return { success: true, message: "Role created successfully!" };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create role.",
+      message: e?.response?.data?.message || "Failed to create admin.",
     };
   }
 }
@@ -242,10 +245,11 @@ export async function updateRole(formData: RoleFormValues, roleId: string) {
     });
 
     return { success: true, message: "Role updated successfully!" };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create role.",
+      message: e?.response?.data?.message || "Failed to create admin.",
     };
   }
 }

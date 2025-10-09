@@ -238,10 +238,11 @@ export async function createRestaurantAdminAction(
     });
 
     return { success: true, message: "Admin created successfully!" };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create admin.",
+      message: e?.response?.data?.message || "Failed to create admin.",
     };
   }
 }
@@ -280,10 +281,11 @@ export async function createRestaurantStaffAction(
     });
 
     return { success: true, message: "Admin created successfully!" };
-  } catch (err: any) {
+   } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create admin.",
+      message: e?.response?.data?.message || "Failed to create admin.",
     };
   }
 }

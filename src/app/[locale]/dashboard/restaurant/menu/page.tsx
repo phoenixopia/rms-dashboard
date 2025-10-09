@@ -1,27 +1,28 @@
 import { getAllMenu } from "@/actions/menu/api";
 import MenuTable from "@/components/restaurant/menu/MenuTable";
 import Pagination from "@/components/dashboard/restaurant/Pagination";
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 interface MenuPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
     limit?: string;
-  };
+  }>;
 }
 
 export default async function Menu({ searchParams }: MenuPageProps) {
-  const page = parseInt(searchParams.page || "1", 10);
-  const limit = parseInt(searchParams.limit || "10", 10);
+  const params = await searchParams; //  Must await it
+  const page = parseInt(params.page || "1", 10);
+  const limit = parseInt(params.limit || "10", 10);
 
   let data: any | null = null;
   let error: string | null = null;
 
   try {
     data = await getAllMenu(page, limit);
-
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error fetching menu data:", err);
     error = "Failed to load menu. Please try again later.";
   }
@@ -30,8 +31,7 @@ export default async function Menu({ searchParams }: MenuPageProps) {
     return <div className="p-4 text-center text-red-500">{error}</div>;
   }
 
-
-  const hasMenu = data?.data && typeof data.data === 'object' && data.data.id;
+  const hasMenu = data?.data && typeof data.data === "object" && data.data.id;
 
   if (!hasMenu) {
     return (

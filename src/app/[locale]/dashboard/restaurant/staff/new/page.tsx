@@ -1,13 +1,21 @@
 "use client";
 import { getAllRoles } from "@/actions/role/api";
-import { CreateRestaurantAdminForm } from "@/components/dashboard/admins/CreateRestaurantAdminForm";
+// import { CreateRestaurantAdminForm } from "@/components/dashboard/admins/CreateRestaurantAdminForm";
 import { CreateRestaurantStaffForm } from "@/components/restaurant/admins/CreateRestaurantStaffForm";
 // import { RoleData } from "@/types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+interface Role {
+  id: string;
+  name: string;
+  permissions?: string[];
+}
+
+
 export default function CreateAdminFormPage() {
-  const [roles, setRoles] = useState<any[]>([]);
+  // const [roles, setRoles] = useState<any[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

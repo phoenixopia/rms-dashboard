@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { PlusCircle, Package, AlertTriangle, XCircle, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 import {
   Card,

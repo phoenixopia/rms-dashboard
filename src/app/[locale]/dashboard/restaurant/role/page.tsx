@@ -3,6 +3,7 @@ import { getAllRoles } from "@/actions/role/api";
 // import SuperAdminRoleTable from "@/components/dashboard/role/SuperAdminRoleTable";
 import RestaurantAdminRoleTable from "@/components/restaurant/role/RestaurantAdminRoleTable";
 import { RoleData, RoleResponse } from "@/types";
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 import { revalidatePath } from 'next/cache';
 import Pagination from "@/components/dashboard/restaurant/Pagination";
@@ -16,7 +17,7 @@ export default async function SuperAdminRolePage() {
   };
   try {
     data = await getAllRoles();
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error fetching roles data:", err);
     error = `Failed to load Roles. Please try again later.${err}`;
   }

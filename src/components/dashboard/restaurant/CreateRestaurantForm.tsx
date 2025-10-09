@@ -144,7 +144,7 @@ export function CreateRestaurantForm() {
           <SelectContent>
             {admins.map((admin) => (
               <SelectItem key={admin.id} value={admin.id.toString()}>
-                {admin.full_name} ({admin.email})
+                {admin.first_name} {admin.last_name} ({admin.email})
               </SelectItem>
             ))}
           </SelectContent>

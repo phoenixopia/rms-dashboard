@@ -47,7 +47,8 @@ export default function NewOrder() {
 
                 const item_result = await getAllMenuItems();
                 const itemsWithSelection = Array.isArray(item_result.data.items)
-                    ? item_result.data.items.map(item => ({ ...item, isSelected: false }))
+                    ? item_result.data.items.map((item: any) => ({ ...item, isSelected: false }))
+
                     : [];
                 setMenuItems(itemsWithSelection);
 
@@ -81,7 +82,8 @@ export default function NewOrder() {
             
             const item_result = await getAllMenuItems(undefined, branchId);
             const itemsWithSelection = Array.isArray(item_result.data.items)
-                ? item_result.data.items.map(item => ({ ...item, isSelected: false }))
+                ? item_result.data.items.map((item: any) => ({ ...item, isSelected: false }))
+
                 : [];
             setMenuItems(itemsWithSelection);
         } catch (error) {
@@ -104,9 +106,9 @@ export default function NewOrder() {
             const item_result = await getAllMenuItems(id)
             const fetchedItems = Array.isArray(item_result.data.items) ? item_result.data.items : [];
             
-            const itemsWithSelection = fetchedItems.map(item => ({
+            const itemsWithSelection = fetchedItems.map((item: any) => ({
                 ...item,
-                isSelected: cart.some(cartItem => cartItem.id === item.id)
+                isSelected: cart.some((cartItem: any) => cartItem.id === item.id),
             }));
 
             setMenuItems(itemsWithSelection);

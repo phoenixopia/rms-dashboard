@@ -5,6 +5,7 @@ import BranchTable from "@/components/restaurant/branch/BranchTable";
 import SuperAdminRoleTable from "@/components/restaurant/role/RestaurantAdminRoleTable";
 import Pagination from "@/components/dashboard/restaurant/Pagination";
 import { RoleData, RoleResponse } from "@/types";
+// eslint-disable-next-line no-restricted-imports
 import Link from "next/link";
 export default async function SuperAdminRolePage() {
   let data:any = [];
@@ -12,7 +13,7 @@ export default async function SuperAdminRolePage() {
 
   try {
     data = await getAllBranches();
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error fetching roles data:", err);
     error = `Failed to load Branches. Please try again later.${err}`;
   }

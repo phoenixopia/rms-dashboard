@@ -207,9 +207,15 @@ export default function VideoStatsSection() {
         const json: StatResponseProps = await res.json();
         if (!json.success) throw new Error(json.message);
         setStats(json.data);
-      } catch (err: any) {
-        toast.error(err.message || "Failed to load stats");
-        setError(err.message || "Failed to load stats");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          toast.error(err.message);
+          setError(err.message);
+        } else {
+          const msg = String(err); // fallback for non-Error types
+          toast.error(msg);
+          setError(msg);
+        }
       } finally {
         setLoading(false);
       }

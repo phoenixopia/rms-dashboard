@@ -72,10 +72,11 @@ export async function createSubscription(data: any) {
     });
 
     return { success: true, message: "Subscription created successfully!" };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create subscription.",
+      message: e?.response?.data?.message || "Failed to create subscription.",
     };
   }
 }
@@ -98,10 +99,11 @@ export async function updateMenuCategory(formData: any,itemId:any) {
       data: response.data,
       message: "Menu category updated successfully",
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to update menu item",
+      message: e?.response?.data?.message || "Failed to update menu item",
     };
   }
 }
@@ -243,10 +245,11 @@ export async function createRestaurant(formData: FormData) {
       data: response.data,
       message: "Restaurant created successfully",
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Something went wrong",
+      message: e?.response?.data?.message || "Failed to create admin.",
     };
   }
 }
@@ -311,10 +314,11 @@ export async function createMenuItem(formData: FormData) {
       data: response.data,
       message: "Menu item created successfully",
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create menu item",
+      message: e?.response?.data?.message || "Failed to create menu item",
     };
   }
 }
@@ -336,10 +340,11 @@ export async function createMenuItemImage(formData:FormData,itemId:any){
       data: response.data,
       message: "Menu item image created successfully",
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to create menu item image",
+      message: e?.response?.data?.message || "Failed to create menu item image",
     };
   }
 
@@ -364,10 +369,11 @@ export async function updateMenuItem(data: any,itemId:any) {
       data: response.data,
       message: "Menu item updated successfully",
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const e = err as any; // temporarily cast to any
     return {
       success: false,
-      message: err?.response?.data?.message || "Failed to update menu item",
+      message: e?.response?.data?.message || "Failed to update menu item",
     };
   }
 }

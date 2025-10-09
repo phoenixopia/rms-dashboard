@@ -19,17 +19,23 @@ export default function EditPlanPage() {
       .then((data) => setPlan(data));
   }, [params.id]);
 
-  const handleUpdate = async (values: CreatePlanValues) => {
-    setLoading(true);
-    try {
-      await updatePlan(params.id, values);
-      router.push("/plans");
-    } catch (err: any) {
+const handleUpdate = async (values: CreatePlanValues) => {
+  setLoading(true);
+  try {
+    await updatePlan(params.id, values);
+    router.push("/plans");
+  } catch (err: unknown) {
+    // Narrow the unknown type
+    if (err instanceof Error) {
       alert(err.message);
-    } finally {
-      setLoading(false);
+    } else {
+      alert("An unexpected error occurred");
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   if (!plan) return <p>Loading...</p>;
 
