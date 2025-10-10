@@ -34,7 +34,7 @@ export interface RouteItem {
 export const allRoutes: RouteItem[] = [
 
       {
-      href: "/dashboard/superadmin/overview",
+      href: "/dashboard/superadmin",
       label: "Dashboard",
       icon: LayoutDashboard,
       permission: "",
@@ -232,25 +232,25 @@ export const allRoutes: RouteItem[] = [
 
 
     { 
-      href: "/dashboard", 
+      href: "/dashboard/staff", 
       label: "Dashboard", 
       icon: LayoutDashboard,
       permission: "",
-      roles: ["staff_admin"] 
+      roles: ["staff"] 
     },
     { 
       href: "/orders", 
       label: "Orders", 
       icon: ShoppingBasket,
       permission: "",
-      roles: ["staff_admin"] 
+      roles: ["staff"] 
      },
     { 
       href: "/settings", 
       label: "Settings", 
       icon: Settings,
       permission: "",
-      roles: ["staff_admin"]  },
+      roles: ["staff"]  },
   ]
 ;
 

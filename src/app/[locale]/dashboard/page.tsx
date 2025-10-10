@@ -11,9 +11,15 @@ export default function DashboardNavigator() {
   const [isRedirecting, setIsRedirecting] = React.useState(false);
 
   useEffect(() => {
-    if (user && user.role_tag !== "super_admin" && !isRedirecting) {
+    if (user && user.role_tag == "restaurant_admin" && !isRedirecting) {
       setIsRedirecting(true);
       router.push("/dashboard/restaurant");
+    } else if (user && user.role_tag == "super_admin" && !isRedirecting) {
+      setIsRedirecting(true);
+      router.push("/dashboard/superadmin");
+    } else if (user && user.role_tag == "staff" && !isRedirecting) {
+      setIsRedirecting(true);
+      router.push("/dashboard/staff");
     }
   }, [user, router, isRedirecting]);
 
@@ -33,10 +39,17 @@ export default function DashboardNavigator() {
       </div>
     );
   }
-
-  return user.role_tag === "super_admin" ? (
+  console.log(user,'user details')
+  return (
+    
+    user.role_tag === "super_admin" ? (
     <AdminDashboard />
-  ) : (
+  ) : user.role_tag === "restaurant_admin" ?(
     <RestaurantAdminDashboard />
-  );
+  ):user.role_tag === "staff" ?(
+    <RestaurantAdminDashboard />
+  ):(<div className="flex min-h-screen items-center justify-center">
+        <p>Unauthorized Access</p>
+      </div>)
+  )
 }

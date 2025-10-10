@@ -75,11 +75,11 @@ export default function LoginForm() {
       } else if (user?.requiresPasswordChange) {
         router.push("/change-password");
       } else if(user?.role_tag === "super_admin"){
-        router.push("/dashboard")
+        router.push("/dashboard/superadmin")
       } else if(user?.role_tag === "restaurant_admin"){
         router.push("/dashboard/restaurant")
       } else{
-        router.push("/dashboard/restaurant")
+        router.push("/dashboard/staff")
       }
     }
   }, [isAuthenticated, user, router]);
