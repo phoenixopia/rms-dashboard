@@ -14,10 +14,12 @@ import {
 import { Link, usePathname } from "@/i18n/navigation";
 import { useAuth } from "@/lib/auth";
 import { RouteItem } from "@/lib/roleRoutes";
+
 import { useRouteGuard } from "@/lib/useRouteGuard";
 import { use } from "react";
 import { useTranslations } from "use-intl";
 import AccessDenied from "../AccessDenied";
+
 interface SidebarProps {
   routes: RouteItem[];
 }
@@ -25,6 +27,7 @@ interface SidebarProps {
 export function AppSidebar({ routes }: SidebarProps) {
   const pathname = usePathname();
   const t =useTranslations("full");
+
     const { isAuthenticated, user } = useAuth();
   
   const accessState = useRouteGuard(user);
