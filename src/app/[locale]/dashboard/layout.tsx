@@ -46,9 +46,9 @@ export default function DashboardLayout({
       </div>
     );
   }
-
+  console.log(user,'user info')
   const routes = user ? filterRoutesByPermission(allRoutes, user) : [];
-
+   console.log(routes,'routes details')
   if (!routes || routes.length === 0) {
     return (
       <div className="flex min-h-screen items-center justify-center">

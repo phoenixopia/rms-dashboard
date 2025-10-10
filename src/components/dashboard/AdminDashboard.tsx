@@ -1,5 +1,9 @@
-import { Activity, Building2, DollarSign, User, Users } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
+import { getAuthToken } from "@/auth/auth";
 import {
   LineChart,
   Line,
@@ -12,165 +16,150 @@ import {
   PieChart,
   Pie,
   Cell,
-  BarChart,
-  Bar,
 } from "recharts";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Store, User, CreditCard } from "lucide-react";
 
-const mockData = {
-  metrics: [
-    {
-      title: "Total Mobile Users",
-      value: "2,350",
-      change: "+15% from last month",
-      icon: Users,
-    },
-    {
-      title: "Restaurant Admins",
-      value: "120",
-      change: "+3 new this week",
-      icon: User,
-    },
-    {
-      title: "Active Restaurants",
-      value: "50",
-      change: "+2% from last quarter",
-      icon: Building2,
-    },
-    {
-      title: "Total Revenue",
-      value: "$45,231.89",
-      change: "+20.1% from last month",
-      icon: DollarSign,
-    },
-  ],
-  weeklyRevenueData: [
-    { name: "Mon", revenue: 4000 },
-    { name: "Tue", revenue: 3000 },
-    { name: "Wed", revenue: 2000 },
-    { name: "Thu", revenue: 2780 },
-    { name: "Fri", revenue: 1890 },
-    { name: "Sat", revenue: 2390 },
-    { name: "Sun", revenue: 3490 },
-  ],
-  transactionsData: [
-    { name: "Jan", transactions: 2400 },
-    { name: "Feb", transactions: 1398 },
-    { name: "Mar", transactions: 9800 },
-    { name: "Apr", transactions: 3908 },
-    { name: "May", transactions: 4800 },
-    { name: "Jun", transactions: 3800 },
-    { name: "Jul", transactions: 4300 },
-    { name: "Aug", transactions: 7000 },
-    { name: "Sep", transactions: 5000 },
-    { name: "Oct", transactions: 6500 },
-    { name: "Nov", transactions: 8200 },
-    { name: "Dec", transactions: 9000 },
-  ],
-  userDistributionData: [
-    { name: "Mobile Users", value: 2350, color: "#8884d8" },
-    { name: "Restaurant Admins", value: 120, color: "#82ca9d" },
-  ],
-  topRestaurantsData: [
-    { name: "Grill House", revenue: 8000 },
-    { name: "Pasta Paradise", revenue: 6500 },
-    { name: "Burger Barn", revenue: 5000 },
-    { name: "Sushi Spot", revenue: 4200 },
-    { name: "The Coffee Bean", revenue: 3800 },
-  ],
-  recentTransactions: [
-    {
-      id: "TXN123",
-      customer: "John Doe",
-      amount: "$50.00",
-      restaurant: "Grill House",
-      date: "2024-07-25",
-    },
-    {
-      id: "TXN124",
-      customer: "Jane Smith",
-      amount: "$25.50",
-      restaurant: "Pasta Paradise",
-      date: "2024-07-25",
-    },
-    {
-      id: "TXN125",
-      customer: "Bob Johnson",
-      amount: "$15.75",
-      restaurant: "Burger Barn",
-      date: "2024-07-24",
-    },
-    {
-      id: "TXN126",
-      customer: "Alice Williams",
-      amount: "$75.20",
-      restaurant: "Sushi Spot",
-      date: "2024-07-24",
-    },
-  ],
-};
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-export default function AdminDashboard() {
-  return (
-    <div className="flex flex-col gap-6 p-5">
-      <h1 className="text-3xl font-bold">Dashboard Overview</h1>
-      <p className="text-muted-foreground">
-        A quick look at your platform's key performance indicators.
-      </p>
+// ======== Type Definitions ========
+type Restaurant = {
+  id: string;
+  restaurant_name: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
-      {/* Metric Cards Section */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {mockData.metrics.map((metric, index) => {
-          const Icon = metric.icon;
-          return (
-            <Card key={index} className="border-none">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {metric.title}
-                </CardTitle>
-                <Icon className="text-muted-foreground h-4 w-4" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{metric.value}</div>
-                <p className="text-xs text-green-500">{metric.change}</p>
-              </CardContent>
-            </Card>
-          );
-        })}
+type Subscription = {
+  id: string;
+  restaurant_name: string;
+  plan_name: string;
+  billing_cycle: string;
+  payment_method: string;
+  start_date: string;
+  end_date: string;
+  receipt: string | null;
+  status: string;
+};
+
+// ======== Component ========
+export default function SuperAdminDashboard() {
+  const [metrics, setMetrics] = useState({
+    totalRestaurants: 0,
+    totalAdmins: 0,
+    totalSubscriptions: 0,
+  });
+
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // === Fetch Dashboard Data ===
+  const fetchDashboardData = async () => {
+    try {
+      const token = await getAuthToken();
+      if (!token) {
+        toast.error("You are not logged in. Redirecting...");
+        window.location.href = "/login";
+        return;
+      }
+
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const [resRestaurants, resUsers, resSubscriptions] = await Promise.all([
+        axios.get(`${API_BASE}/restaurant/all-registered-restaurants?page=${page}&limit=${limit}`, { headers }),
+        axios.get(`${API_BASE}/user/get-all-users`, { headers }),
+        axios.get(`${API_BASE}/subscription/list-all?page=${page}&limit=${limit}`, { headers }),
+      ]);
+
+      const restaurantData = resRestaurants.data?.data;
+      const subscriptionData = resSubscriptions.data?.data;
+
+      setMetrics({
+        totalRestaurants: restaurantData?.total || 0,
+        totalAdmins: resUsers.data?.data?.total || 0,
+        totalSubscriptions: subscriptionData?.totalItems || 0,
+      });
+
+      setRestaurants(restaurantData?.data || []);
+      setSubscriptions(subscriptionData?.data || []);
+      setTotalPages(subscriptionData?.totalPages || 1);
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+      toast.error("Failed to load dashboard data");
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [page]);
+
+  return (
+    <div className="p-6 space-y-6">
+      {/* HEADER */}
+      <div>
+        <h1 className="text-3xl font-bold">Super Admin Dashboard</h1>
+        <p className="text-muted-foreground">Monitor restaurants, admins, and subscriptions.</p>
       </div>
 
-      {/* Charts Section */}
+      {/* METRIC CARDS */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[
+          { title: "Total Restaurants", value: metrics.totalRestaurants, icon: Store },
+          { title: "Restaurant Admins", value: metrics.totalAdmins, icon: User },
+          { title: "Total Subscriptions", value: metrics.totalSubscriptions, icon: CreditCard },
+           { title: "total user", value: 0, icon: User },
+        ].map((item, i) => (
+          <Card key={i} className="border-none shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">{item.title}</CardTitle>
+              <item.icon className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{item.value}</div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* CHARTS */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        {/* Weekly Revenue Line Chart */}
-        <Card className="col-span-4 border-none">
+        {/* Weekly Revenue */}
+        <Card className="col-span-4 border-none shadow-sm">
           <CardHeader>
             <CardTitle>Weekly Revenue</CardTitle>
           </CardHeader>
           <CardContent className="h-[350px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={mockData.weeklyRevenueData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                data={[
+                  { name: "Mon", revenue: 4000 },
+                  { name: "Tue", revenue: 3000 },
+                  { name: "Wed", revenue: 2000 },
+                  { name: "Thu", revenue: 2780 },
+                  { name: "Fri", revenue: 1890 },
+                  { name: "Sat", revenue: 2390 },
+                  { name: "Sun", revenue: 3490 },
+                ]}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
+                <Line type="monotone" dataKey="revenue" stroke="#8884d8" activeDot={{ r: 8 }} />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* User Distribution Pie Chart */}
-        <Card className="col-span-3 border-none">
+        {/* User Pie Chart */}
+        <Card className="col-span-3 border-none shadow-sm">
           <CardHeader>
             <CardTitle>User Distribution</CardTitle>
           </CardHeader>
@@ -178,20 +167,18 @@ export default function AdminDashboard() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={mockData.userDistributionData}
+                  data={[
+                    { name: "Restaurant Admins", value: metrics.totalAdmins },
+                  ]}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
                   outerRadius={80}
-                  fill="#8884d8"
                   paddingAngle={5}
                   dataKey="value"
                 >
-                  {mockData.userDistributionData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
+                  {COLORS.map((color, i) => (
+                    <Cell key={i} fill={color} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -202,60 +189,174 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        {/* Top Restaurants Bar Chart */}
-        <Card className="col-span-4 border-none">
-          <CardHeader>
-            <CardTitle>Top Restaurants by Revenue</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[350px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={mockData.topRestaurantsData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="revenue" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+      {/* REGISTERED RESTAURANTS TABLE */}
+<Card className="border-none shadow-sm mt-6">
+  <CardHeader>
+    <CardTitle>Registered Restaurants</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div className="overflow-x-auto">
+      <table className="min-w-full text-sm">
+        <thead className="bg-gray-50 dark:bg-gray-800">
+          <tr>
+            <th className="p-3 text-left">Name</th>
+            <th className="p-3 text-left">Status</th>
+            <th className="p-3 text-left">Created At</th>
+            <th className="p-3 text-left">Updated At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {restaurants?.length > 0 ? (
+            restaurants.map((r, i) => (
+              <tr key={i} className="border-b">
+                <td className="p-3 font-medium">{r.restaurant_name}</td>
+                <td
+                  className={`p-3 font-semibold ${
+                    r.status === "active" ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {r.status}
+                </td>
+                <td className="p-3">
+                  {new Date(r.createdAt).toLocaleDateString()}
+                </td>
+                <td className="p-3">
+                  {new Date(r.updatedAt).toLocaleDateString()}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td className="p-3 text-muted-foreground" colSpan={4}>
+                No registered restaurants found
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
 
-        {/* Recent Transactions List */}
-        <Card className="col-span-3 border-none">
-          <CardHeader>
-            <CardTitle>Recent Transactions</CardTitle>
-            <div className="text-muted-foreground flex items-center space-x-2 text-sm">
-              <Activity className="h-4 w-4" />
-              <span>Last 24 hours</span>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-4">
-              {mockData.recentTransactions.map((tx) => (
-                <li key={tx.id} className="flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium">{tx.customer}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {tx.restaurant}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-sm font-bold">{tx.amount}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {tx.date}
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+    {/* PAGINATION FOR RESTAURANTS */}
+    {totalPages > 1 && (
+      <div className="flex justify-center items-center mt-4 space-x-2">
+        <button
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          disabled={page === 1}
+          className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+        >
+          Prev
+        </button>
+
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+          <button
+            key={p}
+            onClick={() => setPage(p)}
+            className={`px-3 py-1 rounded ${
+              p === page
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+            }`}
+          >
+            {p}
+          </button>
+        ))}
+
+        <button
+          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={page === totalPages}
+          className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
+    )}
+  </CardContent>
+</Card>
+
+
+      {/* SUBSCRIPTION TABLE */}
+      <Card className="border-none shadow-sm">
+        <CardHeader>
+          <CardTitle>Active Subscriptions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead className="bg-gray-50 dark:bg-gray-800">
+                <tr>
+                  <th className="p-3 text-left">Restaurant</th>
+                  <th className="p-3 text-left">Plan</th>
+                  <th className="p-3 text-left">Billing Cycle</th>
+                  <th className="p-3 text-left">Start Date</th>
+                  <th className="p-3 text-left">End Date</th>
+                  <th className="p-3 text-left">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {subscriptions?.length > 0 ? (
+                  subscriptions.map((s, i) => (
+                    <tr key={i} className="border-b">
+                      <td className="p-3 font-medium">{s.restaurant_name}</td>
+                      <td className="p-3">{s.plan_name}</td>
+                      <td className="p-3 capitalize">{s.billing_cycle}</td>
+                      <td className="p-3">{s.start_date}</td>
+                      <td className="p-3">{s.end_date}</td>
+                      <td
+                        className={`p-3 font-semibold ${
+                          s.status === "active" ? "text-green-600" : "text-red-600"
+                        }`}
+                      >
+                        {s.status}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="p-3 text-muted-foreground" colSpan={6}>
+                      No subscriptions found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* PAGINATION */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center mt-4 space-x-2">
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={`px-3 py-1 rounded ${
+                    p === page
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+
+              <button
+                onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+                className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
