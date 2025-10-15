@@ -12,6 +12,7 @@ import {
   Store,
   ListOrdered,
   ShoppingBasket,
+  Warehouse,
   Utensils,
   Camera,
   CreditCard,
@@ -239,9 +240,16 @@ export const allRoutes: RouteItem[] = [
       roles: ["staff"] 
     },
     { 
-      href: "/orders", 
+      href: "/dashboard/staff/orders", 
       label: "Orders", 
       icon: ShoppingBasket,
+      permission: "",
+      roles: ["staff"] 
+     },
+         { 
+      href: "/dashboard/staff/inventory", 
+      label: "Inventory", 
+      icon: Warehouse,
       permission: "",
       roles: ["staff"] 
      },
