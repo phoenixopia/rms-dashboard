@@ -61,7 +61,7 @@ export default function OrderDetailPage() {
   const handleStatusUpdate = async(order_status:string)=>{
     setLoading(true);
     try{
-      const response = await updateOrderStatus(id,order_status);
+      const response = await updateOrderStatus(id as string,order_status);
       
       const result = await getOrderById(id as string);
       if (result.success) {
@@ -140,16 +140,16 @@ export default function OrderDetailPage() {
             Total: <span className="text-green-600">{order.total_amount} Birr</span>
           </p>
           <button onClick={()=>handlePaymentUpdate(order.kds_id)} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500">
-            {loading==true?"Loading":"Mark as Paid"}
+            {loading?"Loading":"Mark as Paid"}
           </button>
           <button onClick={()=>handleStatusUpdate("Ready")} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500">
-            {loading==true?"Loading":"Mark as ready"}
+            {loading?"Loading":"Mark as ready"}
           </button>
           <button onClick={()=>handleStatusUpdate("Served")} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500">
-            {loading==true?"Loading":"Mark as served"}
+            {loading?"Loading":"Mark as served"}
           </button>
           <button onClick={()=>handleStatusUpdate("Cancelled")} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500">
-            {loading==true?"Loading":"Cancel"}
+            {loading?"Loading":"Cancel"}
           </button>
 
           

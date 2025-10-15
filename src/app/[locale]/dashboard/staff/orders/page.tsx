@@ -10,7 +10,7 @@ interface AdminsPageProps {
   };
 }
 
-export default async function OrdersPages({ searchParams }: AdminsPageProps) {
+export default async function OrdersPages({ searchParams }: any) {
   const page = parseInt(searchParams.page || "1", 10);
   const limit = parseInt(searchParams.limit || "5", 5);
 
@@ -50,3 +50,55 @@ export default async function OrdersPages({ searchParams }: AdminsPageProps) {
     
   );
 }
+
+
+// import { getAllOrders } from "@/actions/order/api";
+// import OrdersTable from "@/components/restaurant/orders/OrdersTable";
+// import Pagination from "@/components/dashboard/restaurant/Pagination";
+// // import { PageProps } from "next/types"; // import built-in Next.js type
+
+// // Use the built-in PageProps
+// export default function OrdersPages({ searchParams }: any) {
+//   return <OrdersContent searchParams={searchParams} />;
+// }
+
+// // Nested async server component
+// async function OrdersContent({ searchParams }: { searchParams?: Record<string, string> }) {
+//   const page = parseInt(searchParams?.page || "1", 10);
+//   const limit = parseInt(searchParams?.limit || "5", 10);
+
+//   let data: any | null = null;
+//   let error: string | null = null;
+
+//   try {
+//     data = await getAllOrders(page, limit);
+//   } catch (err: any) {
+//     console.error("Error fetching orders data:", err);
+//     error = "Failed to load orders. Please try again later.";
+//   }
+
+//   if (error) return <div className="p-4 text-center text-red-500">{error}</div>;
+//   if (!data) return <div className="p-4 text-center">No orders found.</div>;
+
+//   const totalPages = data ? Math.ceil(data.data.pagination.totalPages) : 1;
+
+//   return (
+//     <div className="container">
+//       <h1 className="mb-4 text-2xl font-bold">Orders</h1>
+//       <div className="flex w-full flex-wrap items-center justify-center flex-col">
+//         <OrdersTable
+//           orders={data.data.orders}
+//           categories={Array.isArray(data.data.categories) ? data.data.categories : []}
+//         />
+//         <div className="mt-3">
+//           <Pagination
+//             currentPage={data.data.pagination.page}
+//             totalPages={totalPages}
+//             limit={data.data.pagination.limit}
+//           />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
